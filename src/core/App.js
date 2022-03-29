@@ -1,7 +1,9 @@
 // import './index.css'
 
 import { ChakraProvider } from '@chakra-ui/react'
+import { UserContextProvider } from 'context/UserContext'
 import Footer from '../layout/footer/Footer'
+import AppBar from '../layout/navbar/AppBar'
 import AllRoutes from './Routes'
 
 // const theme = {
@@ -23,12 +25,13 @@ function App() {
 
   return (
     <ChakraProvider>
-      <div>
+      <UserContextProvider>
+        <AppBar />
         <AllRoutes />
         <Footer />
         {/* <Toaster /> */}
 
-      </div>
+      </UserContextProvider>
     </ChakraProvider>
   )
 }

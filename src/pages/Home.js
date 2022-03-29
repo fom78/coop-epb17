@@ -1,6 +1,11 @@
+import Loader from "../components/Loader";
 
 export function Home() {
   return (
-    <div>Home</div>
+    <div>
+      <p>hola feo</p>
+      <Loader />
+
+    </div>
   )
 }
