@@ -51,7 +51,9 @@ const FormEmailPass = ({ type }) => {
     try {
       setLoading(true)
       console.log('#1feo');
-      const { user, error } = await loginOrRegister()
+      const { user, session, error } = await loginOrRegister()
+      console.table('#2', user);
+      console.table('#3', session);
       
       if (error) throw error
 
