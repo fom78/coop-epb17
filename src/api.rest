@@ -1,28 +1,54 @@
 # Rol Moderador
 # @token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTFjODRiZWRiMTVmODIzZjQ5NWFmZmMiLCJleHAiOjE2MzgzMTY5NjI5ODgsImlhdCI6MTYzNzQ1Mjk2Mjk4OCwidXNlcm5hbWUiOiJtb2RlcmF0b3J0ZXN0IiwiaWQiOiI2MTFjODRiZWRiMTVmODIzZjQ5NWFmZmMifQ.A-08p65oPTiVReMcElkxM8M2Y1xPmnz0tBsqao1oZxo
 # Rol Admin
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MDk1NzlmZTMxNmE4ODFjMDRjYjg4ZTQiLCJleHAiOjE2NDQ2OTk2NzcwMjQsImlhdCI6MTY0MzgzNTY3NzAyNSwidXNlcm5hbWUiOiJmb203OCIsImlkIjoiNjA5NTc5ZmUzMTZhODgxYzA0Y2I4OGU0In0.ILNjW1OcfM5LQGfYItRpbcNVMPXmkxEJZ235Rm3xVnc
+@apiKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlbW1na2ZhZHZ1aGNkZXpyZGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg0MzYyNDIsImV4cCI6MTk2NDAxMjI0Mn0.uQMnOyDD8NXyOrP2-ulFS8qep_v2a7AbA2SxYMiLt9E
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjQ5MjY2MDAwLCJzdWIiOiIzNDk3OTMyNC1iNGQ2LTRiOTItYjVlYy0zZDMyZmEyNTI4MGEiLCJlbWFpbCI6InVudXN1YXJpbzA0QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCJ9.vumHFMD2PizH5HHSVMG6ayR9eu-HWNhF8LtuaIGos9o
 
-@hostnameHeroku = profut.herokuapp.com
-@hostnameLocal = localhost
+@hostname = https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/
 
-@port = 4000
-@hostLocal = {{hostnameLocal}}:{{port}}
-@hostHeroku = {{hostnameHeroku}}
 
 @contentType = application/json
 @createdAt = {{$datetime iso8601}}
 @modifiedBy = {{$processEnv USERNAME}}
 
-@host = {{hostLocal}}/api
+@host = {{hostname}}/socios
 
-### Agregar Evento de Monedas
-POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/cursos 
-apikey:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlbW1na2ZhZHZ1aGNkZXpyZGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg0MzYyNDIsImV4cCI6MTk2NDAxMjI0Mn0.uQMnOyDD8NXyOrP2-ulFS8qep_v2a7AbA2SxYMiLt9E
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjQ4NDQxMzgyLCJzdWIiOiIxNmQxMGY1ZS02NGQxLTQyMTctYWNlZS1hZTk4OGYxODVmZjkiLCJlbWFpbCI6ImZvbTc4YUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7fSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQifQ.rAIH2oDuroNA0WSHtYoaKHimB7NMcmdoS7kaWPc1jEg
+### Agregar Cursos
+POST {{hostname}}cursos 
+apikey:{{apiKey}}
+Authorization: Bearer {{token}}
 Content-Type: application/json 
 
 [{"nombre":"2 C"},{"nombre":"2 D"},{"nombre":"3 A"},{"nombre":"3 B"},{"nombre":"3 C"},{"nombre":"3 D"},{"nombre":"4 A"},{"nombre":"4 B"},{"nombre":"4 C"},{"nombre":"4 D"},{"nombre":"5 A"},{"nombre":"5 B"},{"nombre":"5 C"},{"nombre":"5 D"},{"nombre":"6 A"},{"nombre":"6 B"},{"nombre":"6 C"},{"nombre":"6 D"}]
+
+
+### Obtener TODOS los Cursos
+GET {{hostname}}cursos 
+apikey:{{apiKey}}
+Authorization: Bearer {{token}}
+Content-Type: application/json 
+
+### Obtener TODOS los Socios
+GET {{hostname}}socios 
+apikey:{{apiKey}}
+Content-Type: application/json 
+
+
+### agregar Socios
+POST {{hostname}}socios 
+apikey:{{apiKey}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombre":"future Delete Socio1","telefono":"99999999999"}
+
+### Editar Socios
+PATCH {{hostname}}socios?id=eq.21
+apikey:{{apiKey}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombre":"future DeleteXXXX Socio1","telefono":"5555555"}
 
 ### Agregar Evento de Monedas
 POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/socios 

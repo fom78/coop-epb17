@@ -50,16 +50,13 @@ const FormEmailPass = ({ type }) => {
     setShowResult(!showResult);
     try {
       setLoading(true)
-      console.log('#1feo');
       const { user, session, error } = await loginOrRegister()
-      console.table('#2', user);
-      console.table('#3', session);
       
       if (error) throw error
 
       const userLogged = {
         id: user.id,
-        token: '',
+        token: session.access_token,
         email: user.email,
         isLogged: true,
       }

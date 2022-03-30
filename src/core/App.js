@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import { SociosRecordsContextProvider } from 'context/SociosRecordsContext'
 import { UserContextProvider } from 'context/UserContext'
 import Footer from '../layout/footer/Footer'
 import NavBar from '../layout/navbar/NavBar'
@@ -24,10 +25,12 @@ function App() {
   return (
     <ChakraProvider>
       <UserContextProvider>
-        <NavBar />
-        <AllRoutes />
-        <Footer />
-        {/* <Toaster /> */}
+        <SociosRecordsContextProvider>
+          <NavBar />
+          <AllRoutes />
+          <Footer />
+          {/* <Toaster /> */}
+        </SociosRecordsContextProvider>
 
       </UserContextProvider>
     </ChakraProvider>

@@ -21,11 +21,17 @@ class SociosService {
     return axios.get(API_URL + id, { headers: { 'x-access-token': accessToken } })
   }
 
-  getAll (accessToken) {
+  // getAll (accessToken) {
+  //   return axios.get(API_URL, 
+  //     { headers: { 
+  //       'apikey': process.env.REACT_APP_SUPABASE_ANON_KEY,
+  //       'Authorization': `Bearer ${accessToken}`  } })
+  // }
+
+  getAll () {
+    console.log('apikey: ',process.env.REACT_APP_SUPABASE_ANON_KEY);
     return axios.get(API_URL, 
-      { headers: { 
-        'apikey': process.env.REACT_APP_SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${accessToken}`  } })
+      { headers: { 'apikey': process.env.REACT_APP_SUPABASE_ANON_KEY} })
   }
 }
 
