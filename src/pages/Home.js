@@ -1,11 +1,11 @@
-import Loader from "../components/Loader";
+import { useUser } from "context/UserContext";
 
 export function Home() {
+  const { user } = useUser()
   return (
     <div>
       <p>hola feo</p>
-      <Loader />
-
+      {user && user.email}
     </div>
   )
 }

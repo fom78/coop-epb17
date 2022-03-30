@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Flex,
   Button,
@@ -10,8 +10,8 @@ import {
   InputRightElement,
 } from '@chakra-ui/react';
 import { isValidEmail, isValidPassword } from 'utils/validation';
-import ResultsLogReg from './ResultsLogReg';
-import { supabase } from 'utils/supabaseClient'
+import { useUser } from 'context/UserContext';
+import Loader from 'components/Loader';
 
 /**
  * FormEmailPass is a form to put email and password with validations.
@@ -33,24 +33,36 @@ const FormEmailPass = ({ type }) => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
 
+  const { setUser, login, signup } = useUser()
+
   // Handlers
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
   const handleEmail = ({ target }) => setEmail(target.value);
   const handlePassword = ({ target }) => setPassword(target.value);
+
+  const loginOrRegister = () => {
+    if (type === 'login') return  login( email, password )
+    return  signup( email, password )
+  }
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setShowResult(!showResult);
-    // Implementar el logi aca de momento
     try {
       setLoading(true)
       console.log('#1feo');
-      const { error } = await supabase.auth.signIn({ email })
-      console.log('#2feo');
-
+      const { user, error } = await loginOrRegister()
+      
       if (error) throw error
-      console.log('#3feo');
 
-      alert('Check your email for the login link!')
+      const userLogged = {
+        id: user.id,
+        token: '',
+        email: user.email,
+        isLogged: true,
+      }
+      localStorage.setItem('user', JSON.stringify(userLogged));
+      setUser(userLogged)
     } catch (error) {
       alert(error.error_description || error.message)
     } finally {
@@ -60,15 +72,11 @@ const FormEmailPass = ({ type }) => {
   // Validation Button
   const dataIsValid = isValidEmail(email) && isValidPassword(password);
 
+  if (loading) return <Loader size={64}/>
+
   return (
     <Flex align='center' justify='center'>
       <form onSubmit={onSubmit}>
-        {showResult ? (
-          // <ResultsLogReg type={type} email={email} password={password} />
-          <>
-            <h1>Locooooooo</h1>
-          </>
-        ) : (
           <>
             <FormControl
               isInvalid={!isValidEmail(email)}
@@ -127,7 +135,6 @@ const FormEmailPass = ({ type }) => {
               {type === 'login' ? 'Log In' : 'Register'}
             </Button>
           </>
-        )}
       </form>
     </Flex>
   );

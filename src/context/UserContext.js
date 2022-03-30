@@ -1,19 +1,9 @@
 /* eslint-disable no-undef */
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 // supabase
 import { supabase } from 'utils/supabaseClient'
 
-
-
-export const USER_STATES = {
-  NOT_LOGGED: null,
-  NOT_KNOWN: undefined
-}
-
-
 const userContext = createContext()
-
-
 
 export const useUser = () => {
   const context = useContext(userContext)
@@ -21,54 +11,33 @@ export const useUser = () => {
   return context
 }
 
-export function UserContextProvider ({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  const login = async (email, password) => {
-    try {
-      setLoading(true)
-      const { user, error } = await supabase.auth.signIn({ email, password })
-      if (error) throw error
-      setUser(user)
-      console.log('el user: ',user);
-    } catch (error) {
-      alert(error.error_description || error.message)
-    } finally {
-      setLoading(false)
-    }
+const getUserFromLocalStore = () => {
+  if (localStorage.getItem('user')) {
+    return JSON.parse(localStorage.getItem('user'));
   }
-  // const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password)
-  
+  return {
+    id: '',
+    token: '',
+    email: '',
+    isLogged: false,
+  };
+};
 
-  // useEffect(() => {
-  //   const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     // The signed-in user info.
-  //     let normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
-  //     // Add rol and fields specific for user from DB
-  //     if (normalizedUser) {
-  //       AuthService.create(normalizedUser, currentUser.accessToken)
-  //         .then((response) => {
-  //           normalizedUser = { ...normalizedUser, rol: response.data.user.rol }
-  //           setUser(normalizedUser)
-  //         })
-  //         .catch((e) => {
-  //           console.log(e)
-  //         })
-  //     } else {
-  //       setUser(null)
-  //     }
-  //     setLoading(false)
-  //   })
-  //   return () => unsubuscribe()
-  // }, [])
+export function UserContextProvider ({ children }) {
+  const [user, setUser] = useState(getUserFromLocalStore())
+  
+  const login = (email, password) => supabase.auth.signIn({ email, password })
+  const logout = () => supabase.auth.signOut()
+  const signup = (email, password) => supabase.auth.signUp({ email, password })
 
   return (
     <userContext.Provider
       value={{
         login,
+        logout,
+        setUser,
+        signup,
         user,
-        loading,
       }}
     >
       {children}

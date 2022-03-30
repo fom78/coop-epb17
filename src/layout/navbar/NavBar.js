@@ -1,31 +1,32 @@
-import React, { useContext } from 'react';
-// import UserContext from 'context/UserContext';
 import { Flex, Spacer, Box, Heading } from '@chakra-ui/react';
-// import ColorModeSwitcher from 'components/ColorModeSwitcher';
-// import EmptyModal from 'components/EmptyModal';
+// components
+import ColorModeSwitcher from 'components/ColorModeSwitcher';
+import EmptyModal from 'components/EmptyModal';
+
 import FormEmailPass from './FormEmailPass';
 import DrawerNav from './DrawerNav';
 import LogoutButton from './LogoutButton';
-import EmptyModal from '../../components/EmptyModal';
+// context
+import { useUser } from 'context/UserContext';
 /**
- * AppBar is the Main bar of APP, with menu, sign up and sing in.
- * @name AppBar
+ * NavBar is the Main bar of APP, with menu, sign up and sing in.
+ * @name NavBar
  * @component
  * @category Layout
- * @subcategory AppBar
+ * @subcategory NavBar
  * @example
- * <AppBar />
+ * <NavBar />
  * @returns Return a component of React.
  */
-const AppBar = () => {
+const NavBar = () => {
   // Get user context data.
-  // const { user } = useContext(UserContext);
+  const { user } = useUser()
+
   // Render
-  const isLogged = false
   return (
     <Flex align='center' justify='center'>
       {/* {user.isLogged ? ( */}
-      {isLogged ? (
+      {user.isLogged ? (
         <>
           {/* Logged. */}
           <Box m='1'>
@@ -36,13 +37,12 @@ const AppBar = () => {
             <Heading
               fontSize={{ base: '24px', sm: '12px', md: '24px', lg: '42px' }}
             >
-              {/* Welcome {user.email.split('@')[0]} */}
-              Welcome 
+              Welcome {user.email.split('@')[0]}
             </Heading>
           </Box>
           <Spacer />
           <Box m='1'>
-            {/* <ColorModeSwitcher /> */}
+            <ColorModeSwitcher />
             <LogoutButton />
           </Box>
         </>
@@ -50,7 +50,7 @@ const AppBar = () => {
         <>
           {/* Not logged. */}
           <Box p='1'>
-            {/* <ColorModeSwitcher /> */}
+            <ColorModeSwitcher />
           </Box>
           <Spacer />
           <Box p='1'>
@@ -67,4 +67,4 @@ const AppBar = () => {
   );
 };
 
-export default AppBar;
+export default NavBar;

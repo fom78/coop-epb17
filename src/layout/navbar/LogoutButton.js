@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
 import { Button } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
-// import UserContext from 'context/UserContext';
-// import RecordsContext from 'context/RecordsContext';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from 'context/UserContext';
+
 /**
  * LogoutButton is the button to log-out user and remove localstorage and context data.
  * @name LogoutButton
@@ -14,23 +13,28 @@ import { useLocation } from 'react-router-dom';
  * @returns Return a component of React.
  */
 const LogoutButton = () => {
-  // Get Context setters.
-  // const { setUser } = useContext(UserContext);
-  // const { setRecords } = useContext(RecordsContext);
-  // const [, setLocation] = useLocation();
-  // Function to remove.
-  const removeData = () => {
-    // localStorage.removeItem('user');
-    // setUser({
-    //   id: '',
-    //   token: '',
-    //   email: '',
-    //   isLogged: false,
-    // });
-    // localStorage.removeItem('records');
-    // setRecords(null);
-    // setLocation('/');
+  const { setUser, logout } = useUser()
+  const navigate = useNavigate()
+
+  const removeData = async () => {
+
+    try {
+      const { error } = await logout()
+      if (error) throw error
+      localStorage.removeItem('user');
+      setUser({
+        id: '',
+        token: '',
+        email: '',
+        isLogged: false,
+      });
+    } catch (error) {
+      alert(error.error_description || error.message)
+    } finally {
+      navigate('/')
+    }
   };
+  
   return (
     <Button onClick={removeData} colorScheme='teal'>
       Log Out
