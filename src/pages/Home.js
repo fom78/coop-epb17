@@ -1,14 +1,15 @@
 import { Box, chakra, FormLabel, IconButton, Input, InputGroup, InputLeftElement, Stack } from "@chakra-ui/react";
-import useSocios from "hooks/useSocios";
 import { FaSearch } from "react-icons/fa";
 import { BsFillCursorFill } from "react-icons/bs";
 import { useMemo, useRef, useState } from "react";
 import AlertInfo from "components/AlertInfo";
 import SociosTablet from "components/SociosTablet";
+import { useSociosRecords } from "context/SociosRecordsContext";
+import Loader from "components/Loader";
 
 
 export function Home() {
-  const { socios } = useSocios()
+  const { sociosRecords, fetchingSocios } = useSociosRecords()
   const date = Date.now()
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
@@ -19,8 +20,8 @@ export function Home() {
       .replace(/[\u0300-\u036f]/g, "")
       .toLocaleLowerCase();
 
-    return socios.filter((socio) => socio.nombre.toLowerCase().includes(norma));
-  }, [socios, search]);
+    return sociosRecords.filter((socio) => socio.nombre.toLowerCase().includes(norma));
+  }, [sociosRecords, search]);
 
   const inputRef = useRef(null);
 
@@ -32,6 +33,7 @@ export function Home() {
     }
   };
 
+  if (fetchingSocios) return <Loader />
   return (
       <>
         <Stack gap={{ base: 3, md: 5 }}>
@@ -98,7 +100,7 @@ export function Home() {
             </FormLabel>
           </Box>
 
-          {search.length && <SociosTablet date={date} totalData={socios.length} socios={matches} />}
+          {search.length && <SociosTablet date={date} totalData={sociosRecords.length} socios={matches} />}
           {/* {search.length && matches.map(e => <h1>{e.nombre}</h1>)} */}
         </Stack>
       </>

@@ -7,22 +7,16 @@ import AlertInfo from 'components/AlertInfo';
 import {parseCurrency} from 'utils/generals';
 import { useParams } from "react-router-dom";
 import { useSociosRecords } from "context/SociosRecordsContext";
-import useSocios from "hooks/useSocios";
 
 
 const Socio = () => {
-  const { socios } = useSocios()
 
   const params = useParams()
   const {id} = params
   const {sociosRecords} = useSociosRecords()
-  const socio = socios.filter(e => e.id === parseInt(id))
-  console.log('Componente Socio', socio,socios);
+  const socio = sociosRecords.filter(e => e.id === parseInt(id))
 
   const {nombre} = socio[0]
-
-  console.log(socio,socios);
-
 
   // const count = React.useMemo(
   //   () =>

@@ -43,12 +43,12 @@ Content-Type: application/json
 {"nombre":"future Delete Socio1","telefono":"99999999999"}
 
 ### Editar Socios
-PATCH {{hostname}}socios?id=eq.21
+PATCH {{hostname}}socios?id=eq.5
 apikey:{{apiKey}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{"nombre":"future DeleteXXXX Socio1","telefono":"5555555"}
+{"nombre":"Miriam Castro"}
 
 ### Agregar Evento de Monedas
 POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/socios 
