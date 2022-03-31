@@ -7,7 +7,7 @@ import SociosService from 'services/socios.service'
 
 export default function useSocios () {
   const {user} = useUser()
-  console.log('token', user.token);
+  console.log('useSocios!!!!');
   const [noError, setNoError] = useState(true)
   const [fetchingSocios, setfetchingSocios] = useState(true)
   const [socios, setSocios] = useState([])
@@ -17,7 +17,7 @@ export default function useSocios () {
     try {
       if (fetchingSocios) {
         const response = await SociosService.getAll()
-        console.log('los socios', response)
+        console.log('los socios', response.data)
         const sociosFounded = response.data
         setSocios(sociosFounded)
       }

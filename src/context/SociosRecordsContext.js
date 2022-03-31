@@ -13,7 +13,7 @@ const getSociosRecordsFromLocalStore = () => {
   if (localStorage.getItem('sociosRecords')) {
     return JSON.parse(localStorage.getItem('sociosRecords'));
   }
-  return '';
+  return [];
 };
 
 export function SociosRecordsContextProvider ({ children }) {
