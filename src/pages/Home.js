@@ -99,9 +99,7 @@ export function Home() {
               Para iniciar la busqueda en nuestro sistema ingrese el nombre de un socio
             </FormLabel>
           </Box>
-
           {search.length && <SociosTablet date={date} totalData={sociosRecords.length} socios={matches} />}
-          {/* {search.length && matches.map(e => <h1>{e.nombre}</h1>)} */}
         </Stack>
       </>
   )

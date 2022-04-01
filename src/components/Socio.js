@@ -1,42 +1,47 @@
-import {Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem} from "@chakra-ui/react";
-import React from "react";
-import {FaUser, FaChalkboardTeacher} from "react-icons/fa";
+import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Button } from "@chakra-ui/react";
+import React, { useMemo } from "react";
+import { FaUser, FaChalkboardTeacher, FaAngleRight } from "react-icons/fa";
 
-// import StaggeredSlideFade from "../../ui/common/StaggeredSlideFade";
 import AlertInfo from 'components/AlertInfo';
-import {parseCurrency} from 'utils/generals';
+import { parseCurrency, parseMonth } from 'utils/generals';
 import { useParams } from "react-router-dom";
 import { useSociosRecords } from "context/SociosRecordsContext";
-
+import StaggeredSlideFade from "./StaggeredSlideFade";
+import EmptyModal from "./EmptyModal";
+import FormAddPago from "./FormAddPago";
 
 const Socio = () => {
 
   const params = useParams()
-  const {id} = params
-  const {sociosRecords} = useSociosRecords()
+  const { id } = params
+  const { sociosRecords, createPago } = useSociosRecords()
   const socio = sociosRecords.filter(e => e.id === parseInt(id))
 
-  const {nombre} = socio[0]
+  const { nombre, alumnes, pagos } = socio[0]
 
-  // const count = React.useMemo(
-  //   () =>
-  //     payments.reduce((counter, obj) => {
-  //       counter += Number(obj.amount);
+  const count = useMemo(
+    () =>
+      pagos.reduce((counter, obj) => {
+        counter += Number(obj.monto);
 
-  //       return counter;
-  //     }, 0),
-  //   [payments],
-  // );
+        return counter;
+      }, 0),
+    [pagos],
+  );
+
+  const handleAddPago = async (pago) => {
+    await createPago(pago)
+  }
 
   return (
     <Stack gap={5}>
-      {/* <StaggeredSlideFade> */}
-        <Box mt={{base: "none", sm: 8, lg: 12}} mx="auto" py={18}>
+      <StaggeredSlideFade>
+        <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>
             <chakra.h1
               color={"gray.900"}
-              fontSize={{base: "4xl", md: "6xl"}}
-              fontWeight={{base: "bold", md: "extrabold"}}
+              fontSize={{ base: "4xl", md: "6xl" }}
+              fontWeight={{ base: "bold", md: "extrabold" }}
               lineHeight="shorter"
               mb={3}
               textTransform="capitalize"
@@ -44,30 +49,43 @@ const Socio = () => {
               {nombre}
             </chakra.h1>
             <Stack alignItems={"center"} gap={2} mt={5}>
-              {/* {course && (
-                <Wrap>
+              {alumnes && alumnes.map((alumne, index) => (
+                <Wrap key={index}>
                   <WrapItem alignItems="center">
                     <FaChalkboardTeacher color="primary" fontSize={"20px"} />
                     <chakra.p
                       isTruncated
                       color="secondary.800"
-                      fontSize={{base: "sm", md: "md"}}
+                      fontSize={{ base: "sm", md: "md" }}
                       lineHeight="base"
-                      maxW={{base: "320px", md: "800px"}}
+                      maxW={{ base: "320px", md: "800px" }}
                       ml={2}
                       textTransform="capitalize"
                     >
-                      {course[0]}
+                      {alumne.nombre}
+                    </chakra.p>
+                    <Spacer />
+                    <FaAngleRight color="primary" fontSize={"20px"} />
+                    <chakra.p
+                      isTruncated
+                      color="secondary.800"
+                      fontSize={{ base: "sm", md: "md" }}
+                      lineHeight="base"
+                      maxW={{ base: "320px", md: "800px" }}
+                      // ml={1}
+                      textTransform="capitalize"
+                    >
+                      {alumne.grado}
                     </chakra.p>
                   </WrapItem>
                 </Wrap>
-              )} */}
+              ))}
               <Stack isInline alignItems={"center"}>
                 <FaUser color="primary" fontSize={15} />
                 <chakra.p
                   isTruncated
                   color="secondary.800"
-                  fontSize={{base: "sm", md: "md"}}
+                  fontSize={{ base: "sm", md: "md" }}
                   lineHeight="base"
                 >
                   alguna data
@@ -76,12 +94,26 @@ const Socio = () => {
             </Stack>
           </Box>
         </Box>
+        <Box p='1'>
+          <Button bg={'red'} onClick={() => handleAddPago({
+            "periodo": 2022,
+            "mes": 11,
+            "monto": 100,
+            "tipo": "Emergencia",
+            "socio_id": parseInt(id)
+          })}>hola</Button>
+          <EmptyModal title='Sign In on APP' buttonText='Sign In'>
+            <FormAddPago type='login' socioId={parseInt(id)} />
+          </EmptyModal>
+        </Box>
         <AlertInfo
           msg={
-            "Con tu aporte colaborás con el gran trabajo que realiza la Asociación Cooperadora para que cada dia esté mejorando el centro. ¡Gracias!"
+            "Con tu aporte colaborás con el gran trabajo que realiza la Asociación Cooperadora para que cada dia esté mejorando la escuela. ¡Gracias!"
           }
           type={false}
         />
+
+
         <Box>
           <Box
             alignItems="center"
@@ -94,23 +126,26 @@ const Socio = () => {
             <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
               # Pagos
             </ChakraHeading>
+            <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
+              Tipo
+            </ChakraHeading>
             <Box display={"flex"}>
               <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
                 Total:
               </ChakraHeading>
               <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"} ml={3}>
-                {parseCurrency(3,45)}
+                {parseCurrency(count)}
               </ChakraHeading>
             </Box>
           </Box>
-          {/* {payments.map((payment, index) => (
+          {pagos.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
             <Box
               key={index}
               _hover={{
                 bgGradient: "linear(to-r, transparent, secondary.200)",
               }}
               alignItems="center"
-              alignSelf={{base: "center", lg: "flex-start"}}
+              alignSelf={{ base: "center", lg: "flex-start" }}
               bg={"white"}
               borderColor={"secondary.300"}
               borderTopWidth="2px"
@@ -120,12 +155,13 @@ const Socio = () => {
             >
               <Box>
                 <Text fontWeight={"500"} textTransform={"capitalize"}>
-                  - {payment.mth}
+                  - {parseMonth(pago.mes)}
                 </Text>
               </Box>
-              <Text> {parseCurrency(Number(payment.amount))}</Text>
+              <Text fontWeight={"500"} textTransform={"capitalize"}>{pago.tipo}</Text>
+              <Text> {parseCurrency(Number(pago.monto))}</Text>
             </Box>
-          ))} */}
+          ))}
 
           <Box bg={"white"} borderColor={"secondary.300"} borderTopWidth="2px" px={14} py={2}>
             <ChakraHeading
@@ -138,7 +174,7 @@ const Socio = () => {
             </ChakraHeading>
           </Box>
         </Box>
-      {/* </StaggeredSlideFade> */}
+      </StaggeredSlideFade>
     </Stack>
   );
 };

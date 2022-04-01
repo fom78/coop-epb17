@@ -1,8 +1,13 @@
+const nameMonth = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
 export function parseCurrency(value) {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
   }).format(value);
+}
+export function parseMonth(value) {
+  return nameMonth[value-1]
 }
 
 export function timeSince(date) {

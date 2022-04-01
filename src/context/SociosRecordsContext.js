@@ -17,12 +17,12 @@ const getSociosRecordsFromLocalStore = () => {
   return [];
 };
 
-export function SociosRecordsContextProvider ({ children }) {
+export function SociosRecordsContextProvider({ children }) {
   const [sociosRecords, setSociosRecords] = useState(getSociosRecordsFromLocalStore())
   const [fetchingSocios, setfetchingSocios] = useState(true)
   const [noError, setNoError] = useState(true)
 
-  
+
 
   const getSocios = async () => {
     try {
@@ -30,6 +30,7 @@ export function SociosRecordsContextProvider ({ children }) {
         const response = await sociosService.getAll()
         const sociosFounded = response.data
         setSociosRecords(sociosFounded)
+        localStorage.setItem('sociosRecords', JSON.stringify(sociosFounded));
       }
       setfetchingSocios(false)
     } catch (error) {
@@ -40,16 +41,32 @@ export function SociosRecordsContextProvider ({ children }) {
 
   useEffect(() => {
     getSocios()
-  
+
     return () => {
-      
+
     }
   }, [])
-  
-  
+
+  const createPago = async (pago) => {
+    try {
+      const res = await sociosService.createPagoRequest(pago);
+      // Buscar el socio pagante y actualizarle el pago en el estado
+
+      let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)
+      delete pago.socio_id
+      socioFounded[0].pagos.push(pago)
+      //  const sociosRecordsUpdated = sociosRecords.filter(s => s.id !== socioFounded[0].id)
+
+      setSociosRecords([...sociosRecords, socioFounded[0]])
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <sociosRecordsContext.Provider
       value={{
+        createPago,
         fetchingSocios,
         noError,
         setSociosRecords,

@@ -1,8 +1,8 @@
 import axios from 'axios'
 // import { HOST } from 'config'
 const HOST = 'https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/'
-
-const API_URL = `${HOST}socios?select=*`
+const API_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY
+const API_URL = `${HOST}`
 
 class SociosService {
   create (data, accessToken) {
@@ -29,8 +29,13 @@ class SociosService {
   // }
 
   getAll () {
-    return  axios.get(API_URL, 
-      { headers: { 'apikey': process.env.REACT_APP_SUPABASE_ANON_KEY} })
+    return  axios.get(`${API_URL}socios?select=*,pagos(periodo,tipo,mes,monto,nota)`, 
+      { headers: { 'apikey': API_KEY} })
+  }
+
+  createPagoRequest (pago) {
+    return  axios.post(`${API_URL}pagos`, pago,
+      { headers: { 'apikey': API_KEY} })
   }
 }
 
