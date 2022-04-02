@@ -55,9 +55,38 @@ export function SociosRecordsContextProvider({ children }) {
       let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)
       delete pago.socio_id
       socioFounded[0].pagos.push(pago)
-      //  const sociosRecordsUpdated = sociosRecords.filter(s => s.id !== socioFounded[0].id)
 
       setSociosRecords([...sociosRecords, socioFounded[0]])
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deletePago = async (pagoId, socioId) => {
+    try {
+      const res = await sociosService.deletePagoRequest(pagoId);
+
+      let socioFounded = sociosRecords.filter(s =>  s.id === socioId)[0]
+      socioFounded.pagos = socioFounded.pagos.filter(p => p.id !== pagoId)
+      setSociosRecords([...sociosRecords, socioFounded])
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const editPago = async (pagoId, socioId, data) => {
+    try {
+      const res = await sociosService.editPagoRequest(pagoId, data);
+
+      let socioFounded = sociosRecords.filter(s =>  s.id === socioId)[0]
+
+      data.monto = parseInt(data.monto)
+      data.mes = parseInt(data.mes)
+      
+      socioFounded.pagos = [...socioFounded.pagos.filter(p => p.id !== pagoId), data]
+      setSociosRecords([...sociosRecords.filter(s =>  s.id !== socioId), socioFounded])
+
     } catch (error) {
       console.error(error);
     }
@@ -67,6 +96,8 @@ export function SociosRecordsContextProvider({ children }) {
     <sociosRecordsContext.Provider
       value={{
         createPago,
+        deletePago,
+        editPago,
         fetchingSocios,
         noError,
         setSociosRecords,

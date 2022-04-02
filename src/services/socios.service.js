@@ -29,7 +29,7 @@ class SociosService {
   // }
 
   getAll () {
-    return  axios.get(`${API_URL}socios?select=*,pagos(periodo,tipo,mes,monto,nota)`, 
+    return  axios.get(`${API_URL}socios?select=*,pagos(id,periodo,tipo,mes,monto,nota)`, 
       { headers: { 'apikey': API_KEY} })
   }
 
@@ -37,6 +37,17 @@ class SociosService {
     return  axios.post(`${API_URL}pagos`, pago,
       { headers: { 'apikey': API_KEY} })
   }
+
+  deletePagoRequest (id) {
+    return  axios.delete(`${API_URL}pagos?id=eq.${id}`,
+      { headers: { 'apikey': API_KEY} })
+  }
+
+  editPagoRequest (id, data) {
+    return  axios.patch(`${API_URL}pagos?id=eq.${id}`, data,
+      { headers: { 'apikey': API_KEY} })
+  }
+
 }
 
 export default new SociosService()

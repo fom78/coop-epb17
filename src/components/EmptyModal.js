@@ -8,6 +8,7 @@ import {
   ModalHeader,
   ModalBody,
 } from '@chakra-ui/react';
+
 /**
  * EmptyModal is a generic modal to make a your own modal.
  * @name EmptyModal
@@ -22,12 +23,13 @@ import {
  * </EmptyModal>
  * @returns Return a component of React.
  */
-const EmptyModal = ({ children, title, buttonText }) => {
+const EmptyModal = ({ children, title, buttonText, buttonColor='teal' }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       {/* Button Show */}
-      <Button onClick={onOpen} colorScheme='teal' mr='4'>
+      <Button onClick={onOpen} colorScheme={buttonColor} mr='4'>
         {buttonText}
       </Button>
       {/* Modal */}

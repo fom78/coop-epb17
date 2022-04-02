@@ -40,7 +40,7 @@ apikey:{{apiKey}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{"nombre":"future Delete Socio1","telefono":"99999999999"}
+{"nombre":"Delete Socio2","telefono":"99999999999"}
 
 ### Editar Socios
 PATCH {{hostname}}socios?id=eq.5
@@ -76,3 +76,8 @@ Content-Type: application/json
 GET {{hostname}}socios?select=*,pagos(monto,nota)
 apikey:{{apiKey}}
 Content-Type: application/json 
+
+### Eliminar Pago de  Socios
+DELETE {{hostname}}pagos?id=eq.44
+apikey:{{apiKey}}
+Content-Type: application/json

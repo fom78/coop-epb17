@@ -1,6 +1,6 @@
-import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Button } from "@chakra-ui/react";
-import React, { useMemo } from "react";
-import { FaUser, FaChalkboardTeacher, FaAngleRight } from "react-icons/fa";
+import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer } from "@chakra-ui/react";
+import React, { useEffect, useMemo } from "react";
+import { FaEdit, FaUser, FaChalkboardTeacher, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
 import { parseCurrency, parseMonth } from 'utils/generals';
@@ -14,7 +14,7 @@ const Socio = () => {
 
   const params = useParams()
   const { id } = params
-  const { sociosRecords, createPago } = useSociosRecords()
+  const { sociosRecords } = useSociosRecords()
   const socio = sociosRecords.filter(e => e.id === parseInt(id))
 
   const { nombre, alumnes, pagos } = socio[0]
@@ -29,12 +29,8 @@ const Socio = () => {
     [pagos],
   );
 
-  const handleAddPago = async (pago) => {
-    await createPago(pago)
-  }
-
-  return (
-    <Stack gap={5}>
+   return (
+    <Stack gap={5} mb={12}>
       <StaggeredSlideFade>
         <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>
@@ -94,25 +90,19 @@ const Socio = () => {
             </Stack>
           </Box>
         </Box>
+
         <Box p='1'>
-          <Button bg={'red'} onClick={() => handleAddPago({
-            "periodo": 2022,
-            "mes": 11,
-            "monto": 100,
-            "tipo": "Emergencia",
-            "socio_id": parseInt(id)
-          })}>hola</Button>
-          <EmptyModal title='Sign In on APP' buttonText='Sign In'>
-            <FormAddPago type='login' socioId={parseInt(id)} />
+          <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
+            <FormAddPago type='add' socioId={parseInt(id)} />
           </EmptyModal>
         </Box>
+
         <AlertInfo
           msg={
             "Con tu aporte colaborás con el gran trabajo que realiza la Asociación Cooperadora para que cada dia esté mejorando la escuela. ¡Gracias!"
           }
           type={false}
         />
-
 
         <Box>
           <Box
@@ -123,21 +113,29 @@ const Socio = () => {
             px={5}
             py={2}
           >
-            <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
-              # Pagos
-            </ChakraHeading>
-            <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
-              Tipo
-            </ChakraHeading>
-            <Box display={"flex"}>
-              <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
-                Total:
+            <Box display="flex" justifyContent='space-between' w="100%">
+              <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
+                # Pagos
               </ChakraHeading>
-              <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"} ml={3}>
-                {parseCurrency(count)}
+              <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
+                Tipo
+              </ChakraHeading>
+              <Box display={"flex"}>
+                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
+                  Total:
+                </ChakraHeading>
+                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"} ml={3}>
+                  {parseCurrency(count)}
+                </ChakraHeading>
+              </Box>
+            </Box>
+            <Box p='1' display='flex' w={['10%','15%']}>
+              <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
+                Acciones
               </ChakraHeading>
             </Box>
           </Box>
+
           {pagos.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
             <Box
               key={index}
@@ -152,14 +150,24 @@ const Socio = () => {
               display="flex"
               justifyContent={"space-between"}
               p={5}
+              py={2}
+
             >
-              <Box>
+              <Box display='flex' justifyContent='space-between' w="100%">
                 <Text fontWeight={"500"} textTransform={"capitalize"}>
                   - {parseMonth(pago.mes)}
                 </Text>
+                <Text fontWeight={"500"} textTransform={"capitalize"}>{pago.tipo}</Text>
+                <Text> {parseCurrency(Number(pago.monto))}</Text>
               </Box>
-              <Text fontWeight={"500"} textTransform={"capitalize"}>{pago.tipo}</Text>
-              <Text> {parseCurrency(Number(pago.monto))}</Text>
+              <Box p='1' display='flex' w={['10%','15%']}>
+                <EmptyModal title='Editar el pago' buttonText={<FaEdit />} buttonColor='blue'>
+                  <FormAddPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
+                </EmptyModal>
+                <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} buttonColor='red'>
+                  <FormAddPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
+                </EmptyModal>
+              </Box>
             </Box>
           ))}
 

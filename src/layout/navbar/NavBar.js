@@ -1,4 +1,4 @@
-import { Flex, Spacer, Box, Heading } from '@chakra-ui/react';
+import { Flex, Spacer, Box, Heading, Link } from '@chakra-ui/react';
 // components
 import ColorModeSwitcher from 'components/ColorModeSwitcher';
 import EmptyModal from 'components/EmptyModal';
@@ -8,6 +8,7 @@ import DrawerNav from './DrawerNav';
 import LogoutButton from './LogoutButton';
 // context
 import { useUser } from 'context/UserContext';
+import { useNavigate } from 'react-router-dom';
 /**
  * NavBar is the Main bar of APP, with menu, sign up and sing in.
  * @name NavBar
@@ -22,6 +23,7 @@ const NavBar = () => {
   // Get user context data.
   const { user } = useUser()
 
+  const navigate = useNavigate()
   // Render
   return (
     <Flex align='center' justify='center'>
@@ -53,6 +55,13 @@ const NavBar = () => {
             <ColorModeSwitcher />
           </Box>
           <Spacer />
+          <Box p='1'>
+            <Link mr={4} onClick={()=>navigate('/')}>Inicio</Link>
+            <Link onClick={()=>navigate('/faq')}>FAQ's</Link>
+
+          </Box>
+          <Spacer />
+
           <Box p='1'>
             <EmptyModal title='Sign In on APP' buttonText='Sign In'>
               <FormEmailPass type='login' />

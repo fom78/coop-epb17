@@ -1,5 +1,6 @@
-const nameMonth = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+export const nameMonth = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
+export const tipoPagos = ['COOPERADORA ANUAL','CUOTA','PARCIAL','COLABORACION','EMERGENCIA']
 export function parseCurrency(value) {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
