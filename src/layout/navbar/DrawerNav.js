@@ -47,15 +47,21 @@ const DrawerNav = ({ position = 'left' }) => {
                 </Button>
               </Link>
               <Spacer />
-              <Link onClick={onClose} as={WouterLink} to='/table'>
+              <Link onClick={onClose} as={WouterLink} to='/list'>
                 <Button colorScheme='teal' variant='link' mt='6'>
-                  Table
+                  Listado Socios
                 </Button>
               </Link>
               <Spacer />
-              <Link onClick={onClose} as={WouterLink} to='/record'>
+              <Link onClick={onClose} as={WouterLink} to='/faq'>
                 <Button colorScheme='teal' variant='link' mt='6'>
-                  Create New Record
+                  Preguntas Frecuentes
+                </Button>
+              </Link>
+              <Spacer />
+              <Link onClick={onClose} as={WouterLink} to='/admin'>
+                <Button colorScheme='teal' variant='link' mt='6'>
+                  Ruta solo admin
                 </Button>
               </Link>
             </DrawerBody>

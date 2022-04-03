@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import toast from "react-hot-toast";
+
 import {
   Flex,
   Button,
@@ -9,12 +11,12 @@ import {
   InputGroup,
   InputRightElement,
   Select,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { MdArrowDropDown } from "react-icons/md";
 import Loader from 'components/Loader';
 import { useSociosRecords } from 'context/SociosRecordsContext';
 import { nameMonth, tipoPagos } from 'utils/generals';
+import { useUser } from 'context/UserContext';
 
 const mesActual = new Date().getMonth() + 1
 
@@ -41,6 +43,7 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
   const [pago, setPago] = useState(initialPago);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
+  const { setActualModalOpen } = useUser()
 
   const { createPago, editPago, deletePago, sociosRecords } = useSociosRecords()
 
@@ -94,17 +97,29 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     setShowResult(!showResult);
-
+    let msg = ''
     try {
       setLoading(true)
-      if (type === 'add') await createPago({ ...pago, 'socio_id': socioId })
-      if (type === 'edit') await editPago( pagoId, socioId, pago )
-      if (type === 'delete') await deletePago( pagoId, socioId )
+      if (type === 'add') {
+        await createPago({ ...pago, 'socio_id': socioId })
+        msg = 'Pago agregado correctamente 👏'
+      }
+      if (type === 'edit') {
+        await editPago( pagoId, socioId, pago )
+        msg = 'Pago Modificado correctamente 👏'
+      }
+      if (type === 'delete') {
+        await deletePago( pagoId, socioId )
+        msg = 'Pago Eliminado correctamente 👏'
+      }
 
     } catch (error) {
       alert(error.error_description || error.message)
     } finally {
       setLoading(false)
+      setActualModalOpen(false)
+
+      toast.success(msg)
     }
   };
   // // Validation Button

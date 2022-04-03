@@ -58,7 +58,6 @@ const NavBar = () => {
           <Box p='1'>
             <Link mr={4} onClick={()=>navigate('/')}>Inicio</Link>
             <Link onClick={()=>navigate('/faq')}>FAQ's</Link>
-
           </Box>
           <Spacer />
 

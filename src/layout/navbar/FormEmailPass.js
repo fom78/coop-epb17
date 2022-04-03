@@ -12,6 +12,8 @@ import {
 import { isValidEmail, isValidPassword } from 'utils/validation';
 import { useUser } from 'context/UserContext';
 import Loader from 'components/Loader';
+import toast from "react-hot-toast";
+
 
 /**
  * FormEmailPass is a form to put email and password with validations.
@@ -33,7 +35,7 @@ const FormEmailPass = ({ type }) => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
 
-  const { setUser, login, signup } = useUser()
+  const { setUser, login, signup, setActualModalOpen, createProfile } = useUser()
 
   // Handlers
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
@@ -48,12 +50,18 @@ const FormEmailPass = ({ type }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     setShowResult(!showResult);
+    let login = false
     try {
       setLoading(true)
       const { user, session, error } = await loginOrRegister()
       
+      if (type !== 'login') {
+        console.log('registrando, crear en profile');
+        await createProfile(user)
+      }
       if (error) throw error
 
+      console.table(user);
       const userLogged = {
         id: user.id,
         token: session.access_token,
@@ -62,10 +70,15 @@ const FormEmailPass = ({ type }) => {
       }
       localStorage.setItem('user', JSON.stringify(userLogged));
       setUser(userLogged)
+      login = true
     } catch (error) {
-      alert(error.error_description || error.message)
+      // alert(error.error_description || error.message)
+      toast.error(`No puede ingresar al sistema, error: ${error.message}`)
     } finally {
       setLoading(false)
+      setActualModalOpen(false)
+      if (login) toast.success('Ingreso al sistema correctamente')
+
     }
   };
   // Validation Button

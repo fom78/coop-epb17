@@ -1,5 +1,4 @@
-// 1. import `extendTheme` function
-import { extendTheme } from '@chakra-ui/react'
+import {extendTheme, theme} from "@chakra-ui/react";
 
 // 2. Add your color mode config
 const config = {
@@ -23,7 +22,43 @@ const colors = {
  }
 }
 
-// 3. extend the theme
-const theme = extendTheme({ config, colors })
-
-export default theme
+export default extendTheme({
+  colors: {
+    primary: "#171717",
+    secondary: theme.colors.blackAlpha,
+    tertiary: "#dedede",
+    bgColor: "#f5f5f5",
+  },
+  config,
+  fonts: {
+    heading: "Poppins",
+    body: "Poppins",
+  },
+  components: {
+    Button: {
+      baseStyle: {
+        _hover: {
+          color: "primary",
+        },
+        _focus: {
+          color: "primary",
+          boxShadow: "0 0 0 2px #171717",
+        },
+      },
+      variants: {
+        solid: () => ({
+          roundedLeft: 0,
+          colorScheme: "secondary",
+        }),
+      },
+    },
+  },
+  styles: {
+    global: () => ({
+      "::selection": {
+        bg: "secondary.200",
+        color: "primary",
+      },
+    }),
+  },
+});

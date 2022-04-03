@@ -1,4 +1,4 @@
-import { Box, chakra, FormLabel, IconButton, Input, InputGroup, InputLeftElement, Stack } from "@chakra-ui/react";
+import { Box, chakra, FormLabel, IconButton, Input, InputGroup, InputLeftElement, Spacer, Stack } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import { BsFillCursorFill } from "react-icons/bs";
 import { useMemo, useRef, useState } from "react";
@@ -9,7 +9,7 @@ import Loader from "components/Loader";
 
 
 export function Home() {
-  const { sociosRecords, fetchingSocios } = useSociosRecords()
+  const { sociosRecords, loading } = useSociosRecords()
   const date = Date.now()
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
@@ -33,7 +33,7 @@ export function Home() {
     }
   };
 
-  if (fetchingSocios) return <Loader />
+  if (loading) return <Loader />
   return (
       <>
         <Stack gap={{ base: 3, md: 5 }}>
@@ -77,7 +77,7 @@ export function Home() {
                 _placeholder={{ color: "secondary.600", fontSize: { base: "sm", md: "md" } }}
                 autoComplete="off"
                 colorScheme={"secondary"}
-                placeholder="Juan Gonzales"
+                placeholder="Nombre de socio"
                 required={true}
                 roundedRight={0}
                 size="lg"
@@ -101,6 +101,7 @@ export function Home() {
           </Box>
           {search.length && <SociosTablet date={date} totalData={sociosRecords.length} socios={matches} />}
         </Stack>
+        <Spacer h={'50px'}/>
       </>
   )
 }

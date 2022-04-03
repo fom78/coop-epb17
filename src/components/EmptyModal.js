@@ -8,6 +8,8 @@ import {
   ModalHeader,
   ModalBody,
 } from '@chakra-ui/react';
+import { useUser } from 'context/UserContext';
+import { useEffect } from 'react';
 
 /**
  * EmptyModal is a generic modal to make a your own modal.
@@ -25,11 +27,26 @@ import {
  */
 const EmptyModal = ({ children, title, buttonText, buttonColor='teal' }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // Estado para controlar el cierre cuando se realizo la accion del hijo.
+  const { actualModalOpen, setActualModalOpen } = useUser()
 
+  useEffect(() => {
+    if (!actualModalOpen) {
+      onClose()
+    }
+  
+    return () => { }
+  }, [actualModalOpen])
+
+  const handleOpenModal = () => {
+    setActualModalOpen(true)
+    onOpen()
+  }
+  
   return (
     <>
       {/* Button Show */}
-      <Button onClick={onOpen} colorScheme={buttonColor} mr='4'>
+      <Button onClick={()=>handleOpenModal()} colorScheme={buttonColor} mr='4'>
         {buttonText}
       </Button>
       {/* Modal */}

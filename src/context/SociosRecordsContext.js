@@ -20,12 +20,14 @@ const getSociosRecordsFromLocalStore = () => {
 export function SociosRecordsContextProvider({ children }) {
   const [sociosRecords, setSociosRecords] = useState(getSociosRecordsFromLocalStore())
   const [fetchingSocios, setfetchingSocios] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [noError, setNoError] = useState(true)
 
 
 
   const getSocios = async () => {
     try {
+      setLoading(true)
       if (fetchingSocios) {
         const response = await sociosService.getAll()
         const sociosFounded = response.data
@@ -36,6 +38,9 @@ export function SociosRecordsContextProvider({ children }) {
     } catch (error) {
       console.log({ error })
       setNoError(false)
+    } finally {
+      setfetchingSocios(true)
+      setLoading(false)
     }
   }
 
@@ -50,13 +55,18 @@ export function SociosRecordsContextProvider({ children }) {
   const createPago = async (pago) => {
     try {
       const res = await sociosService.createPagoRequest(pago);
-      // Buscar el socio pagante y actualizarle el pago en el estado
+      // Al no tener el id del ultimo pago agregado, para actualizar el estado correctamente debemos obtener los usuarios.
+      await getSocios()
+      // // Buscar el socio pagante y actualizarle el pago en el estado
+      // let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)[0]
+      
+      // delete pago.socio_id
+      // pago.monto = parseInt(pago.monto)
+      // pago.mes = parseInt(pago.mes)
 
-      let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)
-      delete pago.socio_id
-      socioFounded[0].pagos.push(pago)
+      // socioFounded.pagos.push(pago)
 
-      setSociosRecords([...sociosRecords, socioFounded[0]])
+      // setSociosRecords([...sociosRecords, socioFounded[0]])
     } catch (error) {
       console.error(error);
     }
@@ -98,7 +108,7 @@ export function SociosRecordsContextProvider({ children }) {
         createPago,
         deletePago,
         editPago,
-        fetchingSocios,
+        loading,
         noError,
         setSociosRecords,
         sociosRecords,
