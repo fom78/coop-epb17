@@ -1,4 +1,6 @@
-import { Stack } from "@chakra-ui/react";
+import { Box, Heading, Stack } from "@chakra-ui/react";
+import EmptyModal from "components/EmptyModal";
+import FormSocio from "components/FormSocio";
 import SociosTablet from "components/SociosTablet";
 import { useSociosRecords } from "context/SociosRecordsContext";
 
@@ -7,8 +9,17 @@ export function ListSocios() {
   const date = Date.now()
 
   return (
-    <Stack gap={{ base: 3, md: 5 }}>
-      <SociosTablet date={date} totalData={sociosRecords.length} socios={sociosRecords} />
-    </Stack>
+    <>
+      <Stack gap={{ base: 3, md: 5 }}>
+        <Box textAlign={"center"}>Listado de Socios</Box>
+        <Heading textAlign={"center"}>Listado de Socios</Heading>
+        <Box p='1' textAlign={"right"}>
+          <EmptyModal title='Agregar un pago' buttonText='Nuevo Socio'>
+            <FormSocio type='add' socioId={parseInt(23)} />
+          </EmptyModal>
+        </Box>
+        <SociosTablet date={date} totalData={sociosRecords.length} socios={sociosRecords} />
+      </Stack>
+    </>
   )
 }
