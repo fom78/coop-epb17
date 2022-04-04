@@ -33,6 +33,11 @@ class SociosService {
       { headers: { 'apikey': API_KEY} })
   }
 
+  createSocioRequest (socio) {
+    return  axios.post(`${API_URL}socios`, socio,
+      { headers: { 'apikey': API_KEY} })
+  }
+
   createPagoRequest (pago) {
     return  axios.post(`${API_URL}pagos`, pago,
       { headers: { 'apikey': API_KEY} })

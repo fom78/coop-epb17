@@ -8,25 +8,22 @@ import {
   FormLabel,
   FormHelperText,
   Input,
-  InputGroup,
-  InputRightElement,
-  Select,
+  Box,
 } from '@chakra-ui/react';
 import { MdArrowDropDown } from "react-icons/md";
 import Loader from 'components/Loader';
 import { useSociosRecords } from 'context/SociosRecordsContext';
-import { nameMonth, tipoPagos } from 'utils/generals';
 import { useUser } from 'context/UserContext';
 
-
+const initialAlumne = {
+  "nombre": "",
+  "grado": "1A"
+}
 const initialSocio = {
   "nombre": 'Familia de ...',
   "email": 'email',
   "telefono": '999999',
-  "alumnes": [{
-    "nombre": "hijo 1",
-    "grado": "1A"
-  }]
+  "alumnes": []
 }
 /**
  * FormAddPago is a form to add a new pago.
@@ -43,9 +40,10 @@ const initialSocio = {
  */
 const FormSocio = ({ type, socioId = null }) => {
   const [socio, setSocio] = useState(initialSocio);
+  const [alumne, setAlumne] = useState(initialAlumne);
   const { setActualModalOpen } = useUser()
 
-  const { createPago, editPago, deletePago, sociosRecords } = useSociosRecords()
+  const { loading, sociosRecords, createSocio } = useSociosRecords()
 
   // useEffect(() => {
   //   const socio = sociosRecords.filter(s => s.id === socioId)[0]
@@ -93,14 +91,20 @@ const FormSocio = ({ type, socioId = null }) => {
  
   // Handlers
   const handleSocio = ({ target }) => setSocio({ ...socio, [target.name]: target.value });
+  const handleAlumne = ({ target }) => {
+    const {value} = target
+    const name = target.name === 'nombreAlumne' ? 'nombre': target.name
+
+    setAlumne({ ...alumne, [name]:value })
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
     let msg = ''
     try {
       if (type === 'add') {
-        // await createPago({ ...pago, 'socio_id': socioId })
-        console.log('add....');
+        await createSocio(socio)
+        console.log('add....', socio);
         msg = 'Pago agregado correctamente 👏'
       }
       if (type === 'edit') {
@@ -120,10 +124,18 @@ const FormSocio = ({ type, socioId = null }) => {
       toast.success(msg)
     }
   };
+
+  const addAlumneToSocio = () => {
+    setSocio({...socio, alumnes: [...socio.alumnes, alumne]})
+    setAlumne(initialAlumne)
+  }
+  const deleteAlumneToSocio = (nombre) => {
+    setSocio({...socio, alumnes: socio.alumnes.filter(a => a.nombre !== nombre)})
+  }
   // // Validation Button
   // const dataIsValid = isValidEmail(email) && isValidPassword(password);
 
-  // if (loading) return <Loader size={64} />
+  if (loading) return <Loader size={64} />
 
   return (
     <Flex align='center' justify='center'>
@@ -132,63 +144,79 @@ const FormSocio = ({ type, socioId = null }) => {
           <FormControl
             // isInvalid={!isValidEmail(email)}
             isRequired
-            id='input-mes'
+            id='input-nombre'
           >
-            <FormLabel>Mes</FormLabel>
-            <Select
-              type='text'
-              name='mes'
-              icon={<MdArrowDropDown />}
-              onChange={handlePago}
-              value={pago.mes}
-              minLength='1'
-              maxLength='64'
-              disabled={type === 'delete'}
-            >
-              {nameMonth.map((mes, index) => <option key={index} value={index + 1}>{mes}</option>)}
-            </Select>
-            <FormHelperText>Seleccione un mes.</FormHelperText>
-          </FormControl>
-          <FormControl
-            // isInvalid={!isValidEmail(email)}
-            isRequired
-            id='input-tipo'
-          >
-            <FormLabel>Tipo</FormLabel>
-            <Select
-              type='text'
-              name='tipo'
-              icon={<MdArrowDropDown />}
-              onChange={handlePago}
-              value={pago.tipo}
-              minLength='1'
-              maxLength='64'
-              disabled={type === 'delete'}
-            >
-              {tipoPagos.map((tipo, index) => <option key={index} value={tipo}>{tipo}</option>)}
-            </Select>
-          </FormControl>
-          <FormControl
-            // isInvalid={!isValidEmail(email)}
-            isRequired
-            id='input-monto'
-          >
-            <FormLabel>Monto</FormLabel>
-            {/* Autofocus problem: https://github.com/chakra-ui/chakra-ui/issues/3357 */}
+            <FormLabel>Nombre</FormLabel>
             <Input
               type='text'
-              name='monto'
-              placeholder='0000'
-              onChange={handlePago}
-              value={pago.monto}
-              autoFocus
+              name='nombre'
+              onChange={handleSocio}
+              value={socio.nombre}
+              minLength='3'
+              maxLength='64'
+              disabled={type === 'delete'}
+            />
+            <FormHelperText>Coloque el nomre del socio.</FormHelperText>
+          </FormControl>
+          <FormControl
+            id='input-email'
+          >
+            <FormLabel>Email</FormLabel>
+            <Input
+              type='text'
+              name='email'
+              onChange={handleSocio}
+              value={socio.email}
               minLength='1'
               maxLength='64'
               disabled={type === 'delete'}
             />
-            <FormHelperText>We will never share your email.</FormHelperText>
           </FormControl>
-
+          <FormControl
+            // isInvalid={!isValidEmail(email)}
+            id='input-telefono'
+          >
+            <FormLabel>Telefono</FormLabel>
+            <Input
+              type='text'
+              name='telefono'
+              onChange={handleSocio}
+              value={socio.telefono}
+              minLength='1'
+              maxLength='64'
+              disabled={type === 'delete'}
+            />
+          </FormControl>
+          {/* alumnes */}
+          
+          <FormControl
+            id='input-alumne'
+          >
+            <FormLabel>Hijes</FormLabel>
+            <Box d={'flex'}>
+            <Input
+              type='text'
+              name='nombreAlumne'
+              onChange={handleAlumne}
+              value={alumne.nombre}
+              minLength='1'
+              maxLength='64'
+              disabled={type === 'delete'}
+            />
+          <Button
+            isDisabled={alumne.nombre.length === 0}
+            onClick={addAlumneToSocio}
+          >Add</Button>
+          </Box>
+          </FormControl>
+          {socio.alumnes && socio.alumnes.map((a, index) => 
+            <Box d={'flex'}>
+              <p key={index}>{a.nombre}</p>
+              <Button
+            onClick={()=>deleteAlumneToSocio(a.nombre)}
+          >X</Button>
+            </Box>)
+          }
           <Button
             // isDisabled={!dataIsValid}
             mt='4'

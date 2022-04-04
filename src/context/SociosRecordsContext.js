@@ -52,6 +52,19 @@ export function SociosRecordsContextProvider({ children }) {
     }
   }, [])
 
+  const createSocio = async (socio) => {
+    try {
+      setLoading(true)
+      await sociosService.createSocioRequest(socio);
+      // setSociosRecords([...sociosRecords, socio])
+      await getSocios()
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const createPago = async (pago) => {
     try {
       const res = await sociosService.createPagoRequest(pago);
@@ -105,6 +118,7 @@ export function SociosRecordsContextProvider({ children }) {
   return (
     <sociosRecordsContext.Provider
       value={{
+        createSocio,
         createPago,
         deletePago,
         editPago,
