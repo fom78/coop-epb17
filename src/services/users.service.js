@@ -7,12 +7,12 @@ class UsersService {
  
 
    getUserRequest (id) {
-    return  axios.get(`${API_URL}profiles?select=id=eq.${id}`, 
+    return  axios.get(`${API_URL}profiles?id=eq.${id}`, 
       { headers: { 'apikey': API_KEY} })
   }
 
   createProfileRequest (user) {
-    return  axios.post(`${API_URL}profiles`, {id:user.id, rol:'admin',username:'kaka'},
+    return  axios.post(`${API_URL}profiles`, {id:user.id, rol:user.rol,username:user.email},
       { headers: { 'apikey': API_KEY} })
   }
 

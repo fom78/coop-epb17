@@ -24,21 +24,19 @@ const getUserFromLocalStore = () => {
   };
 };
 
-export function UserContextProvider ({ children }) {
+export function UserContextProvider({ children }) {
   const [user, setUser] = useState(getUserFromLocalStore())
   const [loading, setLoading] = useState(false)
   const [fetchingUserProfile, setfetchingUserProfile] = useState(true)
   const [actualModalOpen, setActualModalOpen] = useState(false)
-  
-  const getUserProfile = async () => {
+
+  const getUserProfile = async (id) => {
     try {
       setLoading(true)
       if (fetchingUserProfile) {
         const response = await usersService.getUserRequest(id)
         const userFounded = response.data
-        console.log(userFounded);
-        // setSociosRecords(sociosFounded)
-        // localStorage.setItem('user', JSON.stringify(userLogged));
+        return userFounded[0]
       }
       setfetchingUserProfile(false)
     } catch (error) {
@@ -50,32 +48,62 @@ export function UserContextProvider ({ children }) {
   }
 
 
-  const login = (email, password) => supabase.auth.signIn({ email, password })
-  const logout = () => supabase.auth.signOut()
-  const signup = (email, password) => supabase.auth.signUp({ email, password })
+  const login = async (email, password) => {
 
-  const createProfile = async (user) => {
     try {
-      console.log('###01');
-      await usersService.createProfileRequest(user);
-      console.log('###02');
+      setLoading(true)
+      const { user: userLogged, session, error } = await supabase.auth.signIn({ email, password })
 
-      await getUserProfile(user.id)
-      console.log('###03');
+      if (error) throw error
 
+      userLogged.isLogged = true
+      userLogged.token = session.access_token
+      const profile = await getUserProfile(userLogged.id)
+
+      userLogged.rol = profile.rol
+
+      localStorage.setItem('user', JSON.stringify(userLogged));
+      setUser(userLogged)
     } catch (error) {
-      console.error(error);
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
-  };
+  }
+
+
+  const logout = async () => await supabase.auth.signOut()
+
+  const signup = async (email, password) => {
+    try {
+      setLoading(true)
+      const { user: userLogged, session, error } = await supabase.auth.signUp({ email, password })
+
+      if (error) throw error
+
+      userLogged.isLogged = true
+      userLogged.token = session.access_token
+
+      userLogged.rol = 'user'
+      await usersService.createProfileRequest(userLogged)
+
+      localStorage.setItem('user', JSON.stringify(userLogged));
+      setUser(userLogged)
+    } catch (error) {
+      console.error(error)
+    }finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <userContext.Provider
       value={{
         actualModalOpen,
         setActualModalOpen,
-        createProfile,
         login,
         logout,
+        loading,
         setUser,
         signup,
         user,

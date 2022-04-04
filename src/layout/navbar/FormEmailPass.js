@@ -32,121 +32,101 @@ const FormEmailPass = ({ type }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showResult, setShowResult] = useState(false);
-  const [loading, setLoading] = useState(false)
 
-  const { setUser, login, signup, setActualModalOpen, createProfile } = useUser()
+  const { login, signup, setActualModalOpen, loading } = useUser()
 
   // Handlers
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
   const handleEmail = ({ target }) => setEmail(target.value);
   const handlePassword = ({ target }) => setPassword(target.value);
 
-  const loginOrRegister = () => {
-    if (type === 'login') return  login( email, password )
-    return  signup( email, password )
-  }
-
   const onSubmit = async (event) => {
     event.preventDefault();
-    setShowResult(!showResult);
-    let login = false
+    let noError = true
     try {
-      setLoading(true)
-      const { user, session, error } = await loginOrRegister()
-      
-      if (type !== 'login') {
-        console.log('registrando, crear en profile');
-        await createProfile(user)
-      }
-      if (error) throw error
 
-      console.table(user);
-      const userLogged = {
-        id: user.id,
-        token: session.access_token,
-        email: user.email,
-        isLogged: true,
+      if (type === 'login') {
+        await login(email, password)
       }
-      localStorage.setItem('user', JSON.stringify(userLogged));
-      setUser(userLogged)
-      login = true
+
+      if (type === 'register') {
+        await signup(email, password)
+      }
+
     } catch (error) {
-      // alert(error.error_description || error.message)
+      noError = false
       toast.error(`No puede ingresar al sistema, error: ${error.message}`)
     } finally {
-      setLoading(false)
       setActualModalOpen(false)
-      if (login) toast.success('Ingreso al sistema correctamente')
-
+      if (noError) toast.success('Ingreso al sistema correctamente')
     }
   };
   // Validation Button
   const dataIsValid = isValidEmail(email) && isValidPassword(password);
 
-  if (loading) return <Loader size={64}/>
+  if (loading) return <Loader size={64} />
 
   return (
     <Flex align='center' justify='center'>
       <form onSubmit={onSubmit}>
-          <>
-            <FormControl
-              isInvalid={!isValidEmail(email)}
-              isRequired
-              id='input-email'
-            >
-              <FormLabel>Email Address</FormLabel>
-              {/* Autofocus problem: https://github.com/chakra-ui/chakra-ui/issues/3357 */}
+        <>
+          <FormControl
+            isInvalid={!isValidEmail(email)}
+            isRequired
+            id='input-email'
+          >
+            <FormLabel>Email Address</FormLabel>
+            {/* Autofocus problem: https://github.com/chakra-ui/chakra-ui/issues/3357 */}
+            <Input
+              type='email'
+              placeholder='example@gmail.com'
+              onChange={handleEmail}
+              autoFocus
+              minLength='4'
+              maxLength='64'
+            />
+            <FormHelperText>We will never share your email.</FormHelperText>
+          </FormControl>
+          <FormControl
+            isInvalid={!isValidPassword(password)}
+            isRequired
+            mt={6}
+            id='input-password'
+          >
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
               <Input
-                type='email'
-                placeholder='example@gmail.com'
-                onChange={handleEmail}
-                autoFocus
-                minLength='4'
-                maxLength='64'
+                type={showPassword ? 'text' : 'password'}
+                placeholder='************'
+                onChange={handlePassword}
+                minLength='6'
+                maxLength='32'
               />
-              <FormHelperText>We will never share your email.</FormHelperText>
-            </FormControl>
-            <FormControl
-              isInvalid={!isValidPassword(password)}
-              isRequired
-              mt={6}
-              id='input-password'
-            >
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder='************'
-                  onChange={handlePassword}
-                  minLength='6'
-                  maxLength='32'
-                />
-                <InputRightElement width='4.5rem'>
-                  <Button
-                    h='1.75rem'
-                    size='sm'
-                    onClick={handlePasswordVisibility}
-                  >
-                    {showPassword ? 'Hide' : 'Show'}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <FormHelperText>
-                It must contain between 8 and 32 characters. Be careful, do not
-                share password.
-              </FormHelperText>
-            </FormControl>
-            <Button
-              isDisabled={!dataIsValid}
-              mt='4'
-              w='100%'
-              type='submit'
-              colorScheme='teal'
-            >
-              {type === 'login' ? 'Log In' : 'Register'}
-            </Button>
-          </>
+              <InputRightElement width='4.5rem'>
+                <Button
+                  h='1.75rem'
+                  size='sm'
+                  onClick={handlePasswordVisibility}
+                >
+                  {showPassword ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <FormHelperText>
+              It must contain between 8 and 32 characters. Be careful, do not
+              share password.
+            </FormHelperText>
+          </FormControl>
+          <Button
+            isDisabled={!dataIsValid}
+            mt='4'
+            w='100%'
+            type='submit'
+            colorScheme='teal'
+          >
+            {type === 'login' ? 'Log In' : 'Register'}
+          </Button>
+        </>
       </form>
     </Flex>
   );

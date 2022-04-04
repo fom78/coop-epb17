@@ -1,4 +1,4 @@
-import { Flex, Spacer, Box, Heading, Link } from '@chakra-ui/react';
+import { Flex, Spacer, Box, Heading, Link, Badge } from '@chakra-ui/react';
 // components
 import ColorModeSwitcher from 'components/ColorModeSwitcher';
 import EmptyModal from 'components/EmptyModal';
@@ -39,7 +39,7 @@ const NavBar = () => {
             <Heading
               fontSize={{ base: '24px', sm: '12px', md: '24px', lg: '42px' }}
             >
-              Welcome {user.email.split('@')[0]}
+              Welcome {user.email.split('@')[0]} <Badge colorScheme='blue'>{user.rol}</Badge>
             </Heading>
           </Box>
           <Spacer />
