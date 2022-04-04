@@ -1,7 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from 'context/UserContext';
-import { useSociosRecords } from 'context/SociosRecordsContext';
 
 /**
  * LogoutButton is the button to log-out user and remove localstorage and context data.
@@ -16,7 +15,6 @@ import { useSociosRecords } from 'context/SociosRecordsContext';
 const LogoutButton = () => {
   const { setUser, logout } = useUser()
   const navigate = useNavigate()
-  const { setSociosRecords } = useSociosRecords()
 
   const removeData = async () => {
 

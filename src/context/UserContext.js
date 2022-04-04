@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import usersService from 'services/users.service'
 // supabase
 import { supabase } from 'utils/supabaseClient'
+
+import toast from "react-hot-toast";
 
 const userContext = createContext()
 
@@ -29,7 +31,17 @@ export function UserContextProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [fetchingUserProfile, setfetchingUserProfile] = useState(true)
   const [actualModalOpen, setActualModalOpen] = useState(false)
+  const [notify, setNotify] = useState(null)
 
+
+  useEffect(() => {
+    if (notify) {
+      toast[notify.type](notify.msg)  
+    }
+  
+    return () => { }
+  }, [notify])
+  
   const getUserProfile = async (id) => {
     try {
       setLoading(true)
@@ -64,8 +76,11 @@ export function UserContextProvider({ children }) {
 
       localStorage.setItem('user', JSON.stringify(userLogged));
       setUser(userLogged)
+      setNotify({type:'success', msg:`Ingreso al sistema correctamente`})
+
     } catch (error) {
       console.error(error)
+      setNotify({type:'error', msg:`No puede ingresar al sistema, error: ${error.message}`})
     } finally {
       setLoading(false)
     }
@@ -90,8 +105,10 @@ export function UserContextProvider({ children }) {
 
       localStorage.setItem('user', JSON.stringify(userLogged));
       setUser(userLogged)
+      setNotify({type:'success', msg:`Ingreso al sistema correctamente`})
     } catch (error) {
       console.error(error)
+      setNotify({type:'error', msg:`No puede registrarse en el sistema, error: ${error.message}`})
     }finally {
       setLoading(false)
     }

@@ -44,27 +44,18 @@ const FormEmailPass = ({ type }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    let noError = true
-    try {
-
-      if (type === 'login') {
-        await login(email, password)
-      }
-
-      if (type === 'register') {
-        await signup(email, password)
-      }
-
-      await getSocios()
-
-    } catch (error) {
-      noError = false
-      toast.error(`No puede ingresar al sistema, error: ${error.message}`)
-    } finally {
-      setActualModalOpen(false)
-      if (noError) toast.success('Ingreso al sistema correctamente')
+    if (type === 'login') {
+      await login(email, password)
     }
+
+    if (type === 'register') {
+      await signup(email, password)
+    }
+
+    await getSocios()
+    setActualModalOpen(false)
   };
+
   // Validation Button
   const dataIsValid = isValidEmail(email) && isValidPassword(password);
 
