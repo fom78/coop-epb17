@@ -13,6 +13,7 @@ import { isValidEmail, isValidPassword } from 'utils/validation';
 import { useUser } from 'context/UserContext';
 import Loader from 'components/Loader';
 import toast from "react-hot-toast";
+import { useSociosRecords } from 'context/SociosRecordsContext';
 
 
 /**
@@ -34,6 +35,7 @@ const FormEmailPass = ({ type }) => {
   const [password, setPassword] = useState('');
 
   const { login, signup, setActualModalOpen, loading } = useUser()
+  const {getSocios} = useSociosRecords()
 
   // Handlers
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
@@ -52,6 +54,8 @@ const FormEmailPass = ({ type }) => {
       if (type === 'register') {
         await signup(email, password)
       }
+
+      await getSocios()
 
     } catch (error) {
       noError = false

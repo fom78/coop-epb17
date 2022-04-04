@@ -78,7 +78,7 @@ export function SociosRecordsContextProvider({ children }) {
 
       let socioFounded = sociosRecords.filter(s =>  s.id === socioId)[0]
       socioFounded.pagos = socioFounded.pagos.filter(p => p.id !== pagoId)
-      setSociosRecords([...sociosRecords, socioFounded])
+      setSociosRecords(sociosRecords.map(s => s.id === socioId ? socioFounded : s))
 
     } catch (error) {
       console.error(error);
@@ -94,8 +94,8 @@ export function SociosRecordsContextProvider({ children }) {
       data.monto = parseInt(data.monto)
       data.mes = parseInt(data.mes)
       
-      socioFounded.pagos = [...socioFounded.pagos.filter(p => p.id !== pagoId), data]
-      setSociosRecords([...sociosRecords.filter(s =>  s.id !== socioId), socioFounded])
+      socioFounded.pagos = socioFounded.pagos.map(p => p.id === pagoId ? data : p)
+      setSociosRecords(sociosRecords.map(s =>  s.id === socioId ? socioFounded : s))
 
     } catch (error) {
       console.error(error);
@@ -109,6 +109,7 @@ export function SociosRecordsContextProvider({ children }) {
         deletePago,
         editPago,
         loading,
+        getSocios,
         noError,
         setSociosRecords,
         sociosRecords,

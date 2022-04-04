@@ -74,6 +74,7 @@ export function UserContextProvider({ children }) {
 
   const logout = async () => await supabase.auth.signOut()
 
+
   const signup = async (email, password) => {
     try {
       setLoading(true)

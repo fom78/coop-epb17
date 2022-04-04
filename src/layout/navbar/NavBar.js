@@ -39,7 +39,7 @@ const NavBar = () => {
             <Heading
               fontSize={{ base: '24px', sm: '12px', md: '24px', lg: '42px' }}
             >
-              Welcome {user.email.split('@')[0]} <Badge colorScheme='blue'>{user.rol}</Badge>
+              Welcome {user.email.split('@')[0]} <Badge variant='outline' colorScheme='blue'>{user.rol}</Badge>
             </Heading>
           </Box>
           <Spacer />

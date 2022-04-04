@@ -1,6 +1,7 @@
 import Socio from "components/Socio";
 import { Route, Routes } from "react-router-dom";
 import { Faq, Home, ListSocios, NotFound } from 'pages';
+import { ProtectedRoute } from "components/ProtectedRoute";
 
 function AllRoutes() {
   return (
@@ -10,6 +11,7 @@ function AllRoutes() {
       <Route path="/faq" element={<Faq />} />
       <Route path="/list" element={<ListSocios />} />
       <Route path="/socio/:id" element={<Socio />} />
+      <Route path="/admin" element={<ProtectedRoute><ListSocios /></ProtectedRoute>} />
       {/* <Route path="/new" element={<PostForm />} />
         <Route path="/:id" element={<PostForm />} /> */}
       <Route path="*" element={<NotFound />} />

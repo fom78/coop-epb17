@@ -13,8 +13,7 @@ const SocioCard = ({socio}) => {
   const navigate = useNavigate();
 
   const handlerClick = () => {
-    navigate(`./socio/${id}`);
-    console.log('algooo');
+    navigate(`../socio/${id}`);
   };
 
   return (

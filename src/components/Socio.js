@@ -15,6 +15,8 @@ const Socio = () => {
   const params = useParams()
   const { id } = params
   const { sociosRecords } = useSociosRecords()
+
+  
   const socio = sociosRecords.filter(e => e.id === parseInt(id))
 
   const { nombre, alumnes, pagos } = socio[0]
