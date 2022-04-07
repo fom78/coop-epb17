@@ -22,7 +22,7 @@ const ColorModeSwitcher = () => {
       variant='ghost'
       color='current'
       marginLeft='2'
-      onClick={toggleColorMode}
+      // onClick={toggleColorMode}
       icon={<SwitchIcon />}
     />
   );

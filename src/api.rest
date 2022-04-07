@@ -45,10 +45,9 @@ Content-Type: application/json
 ### Editar Socios
 PATCH {{hostname}}socios?id=eq.5
 apikey:{{apiKey}}
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{"nombre":"Miriam Castro"}
+{"nombre":"Miriam Castro V"}
 
 ### Agregar Evento de Monedas
 POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/socios 
@@ -81,3 +80,9 @@ Content-Type: application/json
 DELETE {{hostname}}pagos?id=eq.44
 apikey:{{apiKey}}
 Content-Type: application/json
+
+### Editar Socios
+PATCH {{hostname}}socios?id=eq.35
+apikey:{{apiKey}}
+Content-Type: application/json
+

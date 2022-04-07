@@ -20,9 +20,9 @@ const initialAlumne = {
   "grado": "1A"
 }
 const initialSocio = {
-  "nombre": 'Familia de ...',
-  "email": 'email',
-  "telefono": '999999',
+  "nombre": '',
+  "email": '',
+  "telefono": '',
   "alumnes": []
 }
 /**
@@ -43,19 +43,18 @@ const FormSocio = ({ type, socioId = null }) => {
   const [alumne, setAlumne] = useState(initialAlumne);
   const { setActualModalOpen } = useUser()
 
-  const { loading, sociosRecords, createSocio } = useSociosRecords()
+  const { loading, sociosRecords, createSocio, editSocio } = useSociosRecords()
 
-  // useEffect(() => {
-  //   const socio = sociosRecords.filter(s => s.id === socioId)[0]
-  //   if (pagoId) {
-  //     const pagoToEditOrDelete = socio.pagos.filter(p => p.id === pagoId)[0]
-  //     setPago(pagoToEditOrDelete)
-  //   }
+  useEffect(() => {
+    const socio = sociosRecords.filter(s => s.id === socioId)[0]
+    if (socio) {
+      setSocio(socio)
+    }
   
-  //   return () => {
+    return () => {
       
-  //   }
-  // }, [pagoId, sociosRecords])
+    }
+  }, [socioId, sociosRecords])
   
 
   // Define the submit button
@@ -104,12 +103,11 @@ const FormSocio = ({ type, socioId = null }) => {
     try {
       if (type === 'add') {
         await createSocio(socio)
-        console.log('add....', socio);
-        msg = 'Pago agregado correctamente 👏'
+        msg = 'Socio agregado correctamente 👏'
       }
       if (type === 'edit') {
-        // await editPago( pagoId, socioId, pago )
-        msg = 'Pago Modificado correctamente 👏'
+        await editSocio(socioId, socio )
+        msg = 'Socio Modificado correctamente 👏'
       }
       if (type === 'delete') {
         // await deletePago( pagoId, socioId )
@@ -150,6 +148,7 @@ const FormSocio = ({ type, socioId = null }) => {
             <Input
               type='text'
               name='nombre'
+              placeholder='Nombre del socio'
               onChange={handleSocio}
               value={socio.nombre}
               minLength='3'
@@ -158,6 +157,7 @@ const FormSocio = ({ type, socioId = null }) => {
             />
             <FormHelperText>Coloque el nomre del socio.</FormHelperText>
           </FormControl>
+          <Box d={'flex'} gap={2}>
           <FormControl
             id='input-email'
           >
@@ -165,6 +165,7 @@ const FormSocio = ({ type, socioId = null }) => {
             <Input
               type='text'
               name='email'
+              placeholder='Email del socio'
               onChange={handleSocio}
               value={socio.email}
               minLength='1'
@@ -180,6 +181,7 @@ const FormSocio = ({ type, socioId = null }) => {
             <Input
               type='text'
               name='telefono'
+              placeholder='Nro de telefono'
               onChange={handleSocio}
               value={socio.telefono}
               minLength='1'
@@ -187,6 +189,8 @@ const FormSocio = ({ type, socioId = null }) => {
               disabled={type === 'delete'}
             />
           </FormControl>
+
+          </Box>
           {/* alumnes */}
           
           <FormControl
@@ -197,6 +201,7 @@ const FormSocio = ({ type, socioId = null }) => {
             <Input
               type='text'
               name='nombreAlumne'
+              placeholder='Nombre del alumno'
               onChange={handleAlumne}
               value={alumne.nombre}
               minLength='1'
@@ -210,8 +215,8 @@ const FormSocio = ({ type, socioId = null }) => {
           </Box>
           </FormControl>
           {socio.alumnes && socio.alumnes.map((a, index) => 
-            <Box d={'flex'}>
-              <p key={index}>{a.nombre}</p>
+            <Box key={index} d={'flex'}>
+              <p>{a.nombre}</p>
               <Button
             onClick={()=>deleteAlumneToSocio(a.nombre)}
           >X</Button>

@@ -9,6 +9,7 @@ import { useSociosRecords } from "context/SociosRecordsContext";
 import StaggeredSlideFade from "./StaggeredSlideFade";
 import EmptyModal from "./EmptyModal";
 import FormAddPago from "./FormAddPago";
+import FormSocio from "./FormSocio";
 
 const Socio = () => {
 
@@ -36,16 +37,28 @@ const Socio = () => {
       <StaggeredSlideFade>
         <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>
-            <chakra.h1
-              color={"gray.900"}
-              fontSize={{ base: "4xl", md: "6xl" }}
-              fontWeight={{ base: "bold", md: "extrabold" }}
-              lineHeight="shorter"
-              mb={3}
-              textTransform="capitalize"
-            >
-              {nombre}
-            </chakra.h1>
+            <Box d={'flex'} justifyContent={'center'} >
+              <chakra.h1
+                color={"gray.900"}
+                fontSize={{ base: "4xl", md: "6xl" }}
+                fontWeight={{ base: "bold", md: "extrabold" }}
+                lineHeight="shorter"
+                mb={3}
+                textTransform="capitalize"
+                pr={3}
+                alignSelf={'center'}
+              >
+                {nombre}
+              </chakra.h1>
+              <Box p='1' display='flex' w={['10%','15%']} alignSelf={'center'}>
+                  <EmptyModal title='Editar' buttonText={<FaEdit />} colorScheme ={'blue'} variant={'outline'}>
+                    <FormSocio type='edit' socioId={parseInt(id)} />
+                  </EmptyModal>
+                  <EmptyModal title='Eliminar' buttonText={<FaTrash />} colorScheme={'red'} variant={'outline'}>
+                    <FormSocio type='delete' socioId={parseInt(id)} />
+                  </EmptyModal>
+                </Box>
+            </Box>
             <Stack alignItems={"center"} gap={2} mt={5}>
               {alumnes && alumnes.map((alumne, index) => (
                 <Wrap key={index}>
@@ -93,7 +106,7 @@ const Socio = () => {
           </Box>
         </Box>
 
-        <Box p='1'>
+        <Box p='1' textAlign={"right"}>
           <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
             <FormAddPago type='add' socioId={parseInt(id)} />
           </EmptyModal>
@@ -163,10 +176,10 @@ const Socio = () => {
                 <Text> {parseCurrency(Number(pago.monto))}</Text>
               </Box>
               <Box p='1' display='flex' w={['10%','15%']}>
-                <EmptyModal title='Editar el pago' buttonText={<FaEdit />} buttonColor='blue'>
+                <EmptyModal title='Editar el pago' buttonText={<FaEdit />} colorScheme ={'blue'} variant={'ghost'}>
                   <FormAddPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
                 </EmptyModal>
-                <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} buttonColor='red'>
+                <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} colorScheme ={'red'} variant={'ghost'}>
                   <FormAddPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
                 </EmptyModal>
               </Box>

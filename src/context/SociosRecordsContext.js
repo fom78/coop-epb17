@@ -52,6 +52,7 @@ export function SociosRecordsContextProvider({ children }) {
     }
   }, [])
 
+  // Socios
   const createSocio = async (socio) => {
     try {
       setLoading(true)
@@ -65,9 +66,24 @@ export function SociosRecordsContextProvider({ children }) {
     }
   }
 
+  const editSocio = async (socioId, data) => {
+    try {
+      const pagos = data.pagos
+      delete data.pagos
+      await sociosService.editSocioRequest(socioId, data);
+     
+      setSociosRecords(sociosRecords.map(s =>  s.id === socioId ? {...data, pagos} : s))
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Pagos de los Socios
+
   const createPago = async (pago) => {
     try {
-      const res = await sociosService.createPagoRequest(pago);
+      await sociosService.createPagoRequest(pago);
       // Al no tener el id del ultimo pago agregado, para actualizar el estado correctamente debemos obtener los usuarios.
       await getSocios()
       // // Buscar el socio pagante y actualizarle el pago en el estado
@@ -119,6 +135,7 @@ export function SociosRecordsContextProvider({ children }) {
     <sociosRecordsContext.Provider
       value={{
         createSocio,
+        editSocio,
         createPago,
         deletePago,
         editPago,

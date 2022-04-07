@@ -38,6 +38,15 @@ class SociosService {
       { headers: { 'apikey': API_KEY} })
   }
 
+  editSocioRequest (id,socio) {
+    return  axios.patch(`${API_URL}socios?id=eq.${id}`, socio,
+      { headers: { 'apikey': API_KEY} })
+  }
+  deleteSocioRequest (id) {
+    return  axios.delete(`${API_URL}socios?id=eq.${id}`,
+      { headers: { 'apikey': API_KEY} })
+  }
+
   createPagoRequest (pago) {
     return  axios.post(`${API_URL}pagos`, pago,
       { headers: { 'apikey': API_KEY} })

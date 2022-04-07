@@ -25,7 +25,7 @@ import { useEffect } from 'react';
  * </EmptyModal>
  * @returns Return a component of React.
  */
-const EmptyModal = ({ children, title, buttonText, buttonColor='teal' }) => {
+const EmptyModal = ({ children, title, buttonText, ...rest }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Estado para controlar el cierre cuando se realizo la accion del hijo.
   const { actualModalOpen, setActualModalOpen } = useUser()
@@ -46,7 +46,7 @@ const EmptyModal = ({ children, title, buttonText, buttonColor='teal' }) => {
   return (
     <>
       {/* Button Show */}
-      <Button onClick={()=>handleOpenModal()} colorScheme={buttonColor} mr='4'>
+      <Button onClick={()=>handleOpenModal()}  mr='4' {...rest} >
         {buttonText}
       </Button>
       {/* Modal */}
