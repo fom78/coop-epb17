@@ -47,7 +47,7 @@ PATCH {{hostname}}socios?id=eq.5
 apikey:{{apiKey}}
 Content-Type: application/json
 
-{"nombre":"Miriam Castro V"}
+{"nombre":"Miriam Castro Ve"}
 
 ### Agregar Evento de Monedas
 POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/socios 
@@ -72,7 +72,7 @@ Content-Type: application/json
 ]
 
 ### Obtener TODOS los Socios y pagos ???
-GET {{hostname}}socios?select=*,pagos(monto,nota)
+GET {{hostname}}socios?deleted=eq.false&select=*,pagos(monto,nota)
 apikey:{{apiKey}}
 Content-Type: application/json 
 

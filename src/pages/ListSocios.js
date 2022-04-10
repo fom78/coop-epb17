@@ -15,7 +15,7 @@ export function ListSocios() {
         <Heading textAlign={"center"}>Listado de Socios</Heading>
         <Box p='1' textAlign={"right"}>
           <EmptyModal title='Agregar un pago' buttonText='Nuevo Socio'>
-            <FormSocio type='add' socioId={parseInt(23)} />
+            <FormSocio type='add' />
           </EmptyModal>
         </Box>
         <SociosTablet date={date} totalData={sociosRecords.length} socios={sociosRecords} />

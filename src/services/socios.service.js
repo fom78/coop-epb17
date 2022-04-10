@@ -5,31 +5,10 @@ const API_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY
 const API_URL = `${HOST}`
 
 class SociosService {
-  create (data, accessToken) {
-    return axios.post(API_URL, data, { headers: { 'x-access-token': accessToken } })
-  }
 
-  update (id, data, accessToken) {
-    return axios.put(API_URL + id, data, { headers: { 'x-access-token': accessToken } })
-  }
-
-  delete (id, accessToken) {
-    return axios.delete(API_URL + id, { headers: { 'x-access-token': accessToken } })
-  }
-
-  get (id, accessToken) {
-    return axios.get(API_URL + id, { headers: { 'x-access-token': accessToken } })
-  }
-
-  // getAll (accessToken) {
-  //   return axios.get(API_URL, 
-  //     { headers: { 
-  //       'apikey': process.env.REACT_APP_SUPABASE_ANON_KEY,
-  //       'Authorization': `Bearer ${accessToken}`  } })
-  // }
 
   getAll () {
-    return  axios.get(`${API_URL}socios?select=*,pagos(id,periodo,tipo,mes,monto,nota)`, 
+    return  axios.get(`${API_URL}socios?deleted=eq.false&select=*,pagos(id,periodo,tipo,mes,monto,nota)`, 
       { headers: { 'apikey': API_KEY} })
   }
 
@@ -38,8 +17,12 @@ class SociosService {
       { headers: { 'apikey': API_KEY} })
   }
 
-  editSocioRequest (id,socio) {
+  editSocioRequest  (id,socio) {
     return  axios.patch(`${API_URL}socios?id=eq.${id}`, socio,
+      { headers: { 'apikey': API_KEY} })
+  }
+  deleteLogicalSocioRequest (id) {
+    return  axios.patch(`${API_URL}socios?id=eq.${id}`, {deleted:true},
       { headers: { 'apikey': API_KEY} })
   }
   deleteSocioRequest (id) {

@@ -8,8 +8,6 @@ import {
   FormLabel,
   FormHelperText,
   Input,
-  InputGroup,
-  InputRightElement,
   Select,
 } from '@chakra-ui/react';
 import { MdArrowDropDown } from "react-icons/md";

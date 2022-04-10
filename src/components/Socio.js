@@ -1,26 +1,30 @@
 import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer } from "@chakra-ui/react";
-import React, { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { FaEdit, FaUser, FaChalkboardTeacher, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
 import { parseCurrency, parseMonth } from 'utils/generals';
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import StaggeredSlideFade from "./StaggeredSlideFade";
 import EmptyModal from "./EmptyModal";
 import FormAddPago from "./FormAddPago";
 import FormSocio from "./FormSocio";
 
+const initialSocio = {
+  'nombre': "",
+  'pagos': [],
+  'alumnes': []
+}
 const Socio = () => {
 
   const params = useParams()
   const { id } = params
   const { sociosRecords } = useSociosRecords()
 
-  
-  const socio = sociosRecords.filter(e => e.id === parseInt(id))
+  const socio  = sociosRecords.filter(e => e.id === parseInt(id))[0] || {...initialSocio, nombre:'deleted'}
 
-  const { nombre, alumnes, pagos } = socio[0]
+  const { nombre, alumnes, pagos=[] } = socio
 
   const count = useMemo(
     () =>
@@ -32,8 +36,11 @@ const Socio = () => {
     [pagos],
   );
 
+if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
+
    return (
     <Stack gap={5} mb={12}>
+      
       <StaggeredSlideFade>
         <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>

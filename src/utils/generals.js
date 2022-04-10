@@ -38,3 +38,19 @@ export function timeSince(date) {
 
   return " hace " + Math.floor(seconds) + " segundos";
 }
+
+const grados = [1,2,3,4,5,6]
+const division = ['A','B','C','D']
+
+export const getCursos = () => {
+  const cursos = []
+  let item=0
+  for (let i = 0; i < grados.length; i++) {
+    for (let j = 0; j < division.length; j++) {
+      cursos[item] =`${grados[i]}${division[j]}` 
+      item++
+    }
+    
+  }
+  return cursos
+}

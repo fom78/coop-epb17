@@ -26,11 +26,12 @@ export function SociosRecordsContextProvider({ children }) {
 
 
   const getSocios = async () => {
+
     try {
       setLoading(true)
       if (fetchingSocios) {
         const response = await sociosService.getAll()
-        const sociosFounded = response.data
+        const sociosFounded = response.data.sort((a,b)=>a.id-b.id)
         setSociosRecords(sociosFounded)
         localStorage.setItem('sociosRecords', JSON.stringify(sociosFounded));
       }
@@ -52,12 +53,12 @@ export function SociosRecordsContextProvider({ children }) {
     }
   }, [])
 
+
   // Socios
   const createSocio = async (socio) => {
     try {
       setLoading(true)
       await sociosService.createSocioRequest(socio);
-      // setSociosRecords([...sociosRecords, socio])
       await getSocios()
     } catch (error) {
       console.error(error);
@@ -68,17 +69,25 @@ export function SociosRecordsContextProvider({ children }) {
 
   const editSocio = async (socioId, data) => {
     try {
-      const pagos = data.pagos
-      delete data.pagos
-      await sociosService.editSocioRequest(socioId, data);
-     
-      setSociosRecords(sociosRecords.map(s =>  s.id === socioId ? {...data, pagos} : s))
+      const res = await sociosService.editSocioRequest(socioId, data);
+
+      if (res.status === 204) setSociosRecords(sociosRecords.map(s => s.id === socioId ? { ...s, ...data } : s))
 
     } catch (error) {
       console.error(error);
     }
   };
 
+  const deleteLogicalSocio = async (socioId) => {
+    try {
+      await sociosService.deleteLogicalSocioRequest(socioId);
+
+      setSociosRecords(sociosRecords.filter(s => s.id !== socioId))
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // Pagos de los Socios
 
   const createPago = async (pago) => {
@@ -88,7 +97,7 @@ export function SociosRecordsContextProvider({ children }) {
       await getSocios()
       // // Buscar el socio pagante y actualizarle el pago en el estado
       // let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)[0]
-      
+
       // delete pago.socio_id
       // pago.monto = parseInt(pago.monto)
       // pago.mes = parseInt(pago.mes)
@@ -105,7 +114,7 @@ export function SociosRecordsContextProvider({ children }) {
     try {
       const res = await sociosService.deletePagoRequest(pagoId);
 
-      let socioFounded = sociosRecords.filter(s =>  s.id === socioId)[0]
+      let socioFounded = sociosRecords.filter(s => s.id === socioId)[0]
       socioFounded.pagos = socioFounded.pagos.filter(p => p.id !== pagoId)
       setSociosRecords(sociosRecords.map(s => s.id === socioId ? socioFounded : s))
 
@@ -118,13 +127,13 @@ export function SociosRecordsContextProvider({ children }) {
     try {
       const res = await sociosService.editPagoRequest(pagoId, data);
 
-      let socioFounded = sociosRecords.filter(s =>  s.id === socioId)[0]
+      let socioFounded = sociosRecords.filter(s => s.id === socioId)[0]
 
       data.monto = parseInt(data.monto)
       data.mes = parseInt(data.mes)
-      
+
       socioFounded.pagos = socioFounded.pagos.map(p => p.id === pagoId ? data : p)
-      setSociosRecords(sociosRecords.map(s =>  s.id === socioId ? socioFounded : s))
+      setSociosRecords(sociosRecords.map(s => s.id === socioId ? socioFounded : s))
 
     } catch (error) {
       console.error(error);
@@ -136,6 +145,7 @@ export function SociosRecordsContextProvider({ children }) {
       value={{
         createSocio,
         editSocio,
+        deleteLogicalSocio,
         createPago,
         deletePago,
         editPago,

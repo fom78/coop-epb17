@@ -9,11 +9,19 @@ import {
   FormHelperText,
   Input,
   Box,
+  Select,
+  Spacer,
+  Stack,
 } from '@chakra-ui/react';
-import { MdArrowDropDown } from "react-icons/md";
 import Loader from 'components/Loader';
 import { useSociosRecords } from 'context/SociosRecordsContext';
 import { useUser } from 'context/UserContext';
+import { MdArrowDropDown } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+
+import { getCursos } from 'utils/generals';
+
+const cursos = getCursos()
 
 const initialAlumne = {
   "nombre": "",
@@ -23,7 +31,18 @@ const initialSocio = {
   "nombre": '',
   "email": '',
   "telefono": '',
-  "alumnes": []
+  "alumnes": [],
+}
+
+const socioToAddOrEdit = (socio) => {
+  const { nombre, email, telefono, alumnes, id = null } = socio
+  return {
+    id,
+    nombre,
+    email,
+    telefono,
+    alumnes,
+  }
 }
 /**
  * FormAddPago is a form to add a new pago.
@@ -39,23 +58,19 @@ const initialSocio = {
  * @returns Return a component of React.
  */
 const FormSocio = ({ type, socioId = null }) => {
-  const [socio, setSocio] = useState(initialSocio);
+  const { loading, sociosRecords, createSocio, editSocio, deleteLogicalSocio } = useSociosRecords()
+
+  const [socio, setSocio] = useState(socioToAddOrEdit(sociosRecords.filter(s => s.id === socioId)[0] || initialSocio));
   const [alumne, setAlumne] = useState(initialAlumne);
   const { setActualModalOpen } = useUser()
 
-  const { loading, sociosRecords, createSocio, editSocio } = useSociosRecords()
-
   useEffect(() => {
-    const socio = sociosRecords.filter(s => s.id === socioId)[0]
-    if (socio) {
-      setSocio(socio)
+    if (type === 'add') {
+      setSocio(initialSocio)
     }
-  
-    return () => {
-      
-    }
-  }, [socioId, sociosRecords])
-  
+    return () => { }
+  }, [type])
+
 
   // Define the submit button
   let btnProps = {}
@@ -87,14 +102,14 @@ const FormSocio = ({ type, socioId = null }) => {
       break;
   }
 
- 
+
   // Handlers
   const handleSocio = ({ target }) => setSocio({ ...socio, [target.name]: target.value });
   const handleAlumne = ({ target }) => {
-    const {value} = target
-    const name = target.name === 'nombreAlumne' ? 'nombre': target.name
+    const { value } = target
+    const name = target.name === 'nombreAlumne' ? 'nombre' : target.name
 
-    setAlumne({ ...alumne, [name]:value })
+    setAlumne({ ...alumne, [name]: value })
   };
 
   const onSubmit = async (event) => {
@@ -106,12 +121,12 @@ const FormSocio = ({ type, socioId = null }) => {
         msg = 'Socio agregado correctamente 👏'
       }
       if (type === 'edit') {
-        await editSocio(socioId, socio )
+        await editSocio(socioId, socio)
         msg = 'Socio Modificado correctamente 👏'
       }
       if (type === 'delete') {
-        // await deletePago( pagoId, socioId )
-        msg = 'Pago Eliminado correctamente 👏'
+        await deleteLogicalSocio(socioId)
+        msg = 'Socio Eliminado correctamente 👏'
       }
 
     } catch (error) {
@@ -124,11 +139,11 @@ const FormSocio = ({ type, socioId = null }) => {
   };
 
   const addAlumneToSocio = () => {
-    setSocio({...socio, alumnes: [...socio.alumnes, alumne]})
+    setSocio({ ...socio, alumnes: [...socio.alumnes, alumne] })
     setAlumne(initialAlumne)
   }
   const deleteAlumneToSocio = (nombre) => {
-    setSocio({...socio, alumnes: socio.alumnes.filter(a => a.nombre !== nombre)})
+    setSocio({ ...socio, alumnes: socio.alumnes.filter(a => a.nombre !== nombre) })
   }
   // // Validation Button
   // const dataIsValid = isValidEmail(email) && isValidPassword(password);
@@ -158,69 +173,96 @@ const FormSocio = ({ type, socioId = null }) => {
             <FormHelperText>Coloque el nomre del socio.</FormHelperText>
           </FormControl>
           <Box d={'flex'} gap={2}>
-          <FormControl
-            id='input-email'
-          >
-            <FormLabel>Email</FormLabel>
-            <Input
-              type='text'
-              name='email'
-              placeholder='Email del socio'
-              onChange={handleSocio}
-              value={socio.email}
-              minLength='1'
-              maxLength='64'
-              disabled={type === 'delete'}
-            />
-          </FormControl>
-          <FormControl
-            // isInvalid={!isValidEmail(email)}
-            id='input-telefono'
-          >
-            <FormLabel>Telefono</FormLabel>
-            <Input
-              type='text'
-              name='telefono'
-              placeholder='Nro de telefono'
-              onChange={handleSocio}
-              value={socio.telefono}
-              minLength='1'
-              maxLength='64'
-              disabled={type === 'delete'}
-            />
-          </FormControl>
+            <FormControl
+              id='input-email'
+            >
+              <FormLabel>Email</FormLabel>
+              <Input
+                type='text'
+                name='email'
+                placeholder='Email del socio'
+                onChange={handleSocio}
+                value={socio.email}
+                minLength='1'
+                maxLength='64'
+                disabled={type === 'delete'}
+              />
+            </FormControl>
+            <FormControl
+              // isInvalid={!isValidEmail(email)}
+              id='input-telefono'
+            >
+              <FormLabel>Telefono</FormLabel>
+              <Input
+                type='text'
+                name='telefono'
+                placeholder='Nro de telefono'
+                onChange={handleSocio}
+                value={socio.telefono}
+                minLength='1'
+                maxLength='64'
+                disabled={type === 'delete'}
+              />
+            </FormControl>
 
           </Box>
           {/* alumnes */}
-          
+
           <FormControl
             id='input-alumne'
           >
             <FormLabel>Hijes</FormLabel>
-            <Box d={'flex'}>
-            <Input
-              type='text'
-              name='nombreAlumne'
-              placeholder='Nombre del alumno'
-              onChange={handleAlumne}
-              value={alumne.nombre}
-              minLength='1'
-              maxLength='64'
-              disabled={type === 'delete'}
-            />
-          <Button
-            isDisabled={alumne.nombre.length === 0}
-            onClick={addAlumneToSocio}
-          >Add</Button>
-          </Box>
-          </FormControl>
-          {socio.alumnes && socio.alumnes.map((a, index) => 
-            <Box key={index} d={'flex'}>
-              <p>{a.nombre}</p>
+            <Box d={'flex'} gap={2}>
+              <Input
+                type='text'
+                name='nombreAlumne'
+                placeholder='Nombre del alumno'
+                onChange={handleAlumne}
+                value={alumne.nombre}
+                minLength='1'
+                maxLength='64'
+                disabled={type === 'delete'}
+              />
+              <Select
+                type='text'
+                name='grado'
+                icon={<MdArrowDropDown />}
+                onChange={handleAlumne}
+                value={alumne.grado}
+                minLength='1'
+                // maxLength='64'
+                w={'35%'}
+                // size={'xs'}
+                disabled={type === 'delete'}
+              >
+                {cursos.map((curso, index) => <option key={index} value={curso}>{curso}</option>)}
+              </Select>
               <Button
-            onClick={()=>deleteAlumneToSocio(a.nombre)}
-          >X</Button>
+                isDisabled={alumne.nombre.length === 0}
+                onClick={addAlumneToSocio}
+              >Add</Button>
+            </Box>
+          </FormControl>
+          <Spacer h={3} />
+          {(socio.alumnes && socio.alumnes.length > 0) ? socio.alumnes.map((a, index) =>
+            <Box
+              key={index}
+              d={'flex'}
+              borderColor={"secondary.300"}
+              borderTopWidth="2px"
+            >
+              <Stack isInline w={'100%'} alignItems="center" justifyContent={"space-between"}>
+                <Box alignItems="center" w={'100%'} mr={8} display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
+                  <Box>{a.nombre}</Box>
+                  <Box>{a.grado}</Box> 
+                </Box>
+                <Button
+                colorScheme ={'red'} variant={'ghost'}
+                  onClick={() => deleteAlumneToSocio(a.nombre)}
+                ><FaTrash /></Button>
+              </Stack>
             </Box>)
+            : <p>No hay alumnos agregados!</p>
           }
           <Button
             // isDisabled={!dataIsValid}

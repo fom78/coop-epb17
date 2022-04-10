@@ -9,11 +9,9 @@ function AllRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/faq" element={<Faq />} />
-      <Route path="/list" element={<ListSocios />} />
+      <Route path="/list" element={<ProtectedRoute rolConAcceso="user"><ListSocios /> </ProtectedRoute>} />
       <Route path="/socio/:id" element={<Socio />} />
-      <Route path="/admin" element={<ProtectedRoute><ListSocios /></ProtectedRoute>} />
-      {/* <Route path="/new" element={<PostForm />} />
-        <Route path="/:id" element={<PostForm />} /> */}
+      <Route path="/admin" element={<ProtectedRoute rolConAcceso="admin"><ListSocios /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
