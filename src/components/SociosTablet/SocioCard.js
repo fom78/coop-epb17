@@ -1,11 +1,10 @@
-import {Heading, Box, Stack, Text, Wrap, WrapItem, IconButton} from "@chakra-ui/react";
-import {FaChevronRight, FaUser} from "react-icons/fa";
+import { Heading, Box, Stack, Text, Wrap, WrapItem, IconButton } from "@chakra-ui/react";
+import { FaChevronRight, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import Avatar from 'components/icons/Avatar';
 
-const SocioCard = ({socio}) => {
-
+const SocioCard = ({ socio }) => {
   const {
     nombre,
     id,
@@ -21,7 +20,7 @@ const SocioCard = ({socio}) => {
       _hover={{
         bgGradient: "linear(to-r, transparent, secondary.200)",
       }}
-      alignSelf={{base: "center", lg: "flex-start"}}
+      alignSelf={{ base: "center", lg: "flex-start" }}
       bg={"white"}
       borderColor={"secondary.300"}
       borderTopWidth="2px"
@@ -39,9 +38,18 @@ const SocioCard = ({socio}) => {
             </Heading>
             <Stack isInline alignItems={"center"} mt={1}>
               <FaUser color="primary" fontSize={12} />
-              <Text color="primary" fontSize="13" fontWeight={"500"}>
-                alguna data
-              </Text>
+              {socio.alumnes.length > 0
+                ?
+                socio.alumnes.map((a, index) =>
+                <Text key={index} color="primary" fontSize="13" fontWeight={"500"}>
+                  {a.nombre}
+                </Text>
+                )
+                :
+                <Text color="primary" fontSize="13" fontWeight={"500"}>
+                  No tiene alumnes agregados
+                </Text>
+              }
             </Stack>
             {/* {course.length > 0 && (
               <Wrap>

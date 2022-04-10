@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link as WouterLink } from 'react-router-dom';
+import { useUser } from 'context/UserContext';
 /**
  * Drawer is a menu-nav style drawer.
  * @name DrawerNav
@@ -26,6 +27,8 @@ import { Link as WouterLink } from 'react-router-dom';
  */
 const DrawerNav = ({ position = 'left' }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useUser()
+
   return (
     <Box>
       <Button colorScheme='teal' onClick={onOpen} size='xs'>
@@ -59,11 +62,13 @@ const DrawerNav = ({ position = 'left' }) => {
                 </Button>
               </Link>
               <Spacer />
-              <Link onClick={onClose} as={WouterLink} to='/admin'>
-                <Button colorScheme='teal' variant='link' mt='6'>
-                  Ruta solo admin
-                </Button>
-              </Link>
+              {(user.rol === 'admin' || user.rol === 'mod') &&
+                <Link onClick={onClose} as={WouterLink} to='/admin'>
+                  <Button colorScheme='teal' variant='link' mt='6'>
+                    Administración
+                  </Button>
+                </Link>
+              }
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

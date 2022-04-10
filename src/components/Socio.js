@@ -10,6 +10,7 @@ import StaggeredSlideFade from "./StaggeredSlideFade";
 import EmptyModal from "./EmptyModal";
 import FormAddPago from "./FormAddPago";
 import FormSocio from "./FormSocio";
+import { useUser } from "context/UserContext";
 
 const initialSocio = {
   'nombre': "",
@@ -21,10 +22,11 @@ const Socio = () => {
   const params = useParams()
   const { id } = params
   const { sociosRecords } = useSociosRecords()
+  const { user } = useUser()
 
-  const socio  = sociosRecords.filter(e => e.id === parseInt(id))[0] || {...initialSocio, nombre:'deleted'}
+  const socio = sociosRecords.filter(e => e.id === parseInt(id))[0] || { ...initialSocio, nombre: 'deleted' }
 
-  const { nombre, alumnes, pagos=[] } = socio
+  const { nombre, alumnes, pagos = [] } = socio
 
   const count = useMemo(
     () =>
@@ -36,11 +38,11 @@ const Socio = () => {
     [pagos],
   );
 
-if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
+  if (socio.nombre === 'deleted') return <Navigate to="/list" replace={true} />
 
-   return (
+  return (
     <Stack gap={5} mb={12}>
-      
+
       <StaggeredSlideFade>
         <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>
@@ -57,14 +59,17 @@ if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
               >
                 {nombre}
               </chakra.h1>
-              <Box p='1' display='flex' w={['10%','15%']} alignSelf={'center'}>
-                  <EmptyModal title='Editar' buttonText={<FaEdit />} colorScheme ={'blue'} variant={'outline'}>
+              {/* Acciones para el Socio */}
+              {(user.rol === 'admin' || user.rol === 'mod') &&
+                <Box p='1' display='flex' w={['10%', '15%']} alignSelf={'center'}>
+                  <EmptyModal title='Editar' buttonText={<FaEdit />} colorScheme={'blue'} variant={'outline'}>
                     <FormSocio type='edit' socioId={parseInt(id)} />
                   </EmptyModal>
                   <EmptyModal title='Eliminar' buttonText={<FaTrash />} colorScheme={'red'} variant={'outline'}>
                     <FormSocio type='delete' socioId={parseInt(id)} />
                   </EmptyModal>
                 </Box>
+              }
             </Box>
             <Stack alignItems={"center"} gap={2} mt={5}>
               {alumnes && alumnes.map((alumne, index) => (
@@ -112,13 +117,13 @@ if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
             </Stack>
           </Box>
         </Box>
-
-        <Box p='1' textAlign={"right"}>
-          <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
-            <FormAddPago type='add' socioId={parseInt(id)} />
-          </EmptyModal>
-        </Box>
-
+        {(user.rol === 'admin' || user.rol === 'mod') &&
+          <Box p='1' textAlign={"right"}>
+            <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
+              <FormAddPago type='add' socioId={parseInt(id)} />
+            </EmptyModal>
+          </Box>
+        }
         <AlertInfo
           msg={
             "Con tu aporte colaborás con el gran trabajo que realiza la Asociación Cooperadora para que cada dia esté mejorando la escuela. ¡Gracias!"
@@ -151,11 +156,13 @@ if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
                 </ChakraHeading>
               </Box>
             </Box>
-            <Box p='1' display='flex' w={['10%','15%']}>
+            {(user.rol === 'admin' || user.rol === 'mod') &&
+            <Box p='1' display='flex' w={['10%', '15%']}>
               <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
                 Acciones
               </ChakraHeading>
             </Box>
+          }
           </Box>
 
           {pagos.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
@@ -182,14 +189,16 @@ if (socio.nombre==='deleted') return <Navigate to="/list" replace={true} />
                 <Text fontWeight={"500"} textTransform={"capitalize"}>{pago.tipo}</Text>
                 <Text> {parseCurrency(Number(pago.monto))}</Text>
               </Box>
-              <Box p='1' display='flex' w={['10%','15%']}>
-                <EmptyModal title='Editar el pago' buttonText={<FaEdit />} colorScheme ={'blue'} variant={'ghost'}>
-                  <FormAddPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
-                </EmptyModal>
-                <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} colorScheme ={'red'} variant={'ghost'}>
-                  <FormAddPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
-                </EmptyModal>
-              </Box>
+              {(user.rol === 'admin' || user.rol === 'mod') &&
+                <Box p='1' display='flex' w={['10%', '15%']}>
+                  <EmptyModal title='Editar el pago' buttonText={<FaEdit />} colorScheme={'blue'} variant={'ghost'}>
+                    <FormAddPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
+                  </EmptyModal>
+                  <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} colorScheme={'red'} variant={'ghost'}>
+                    <FormAddPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
+                  </EmptyModal>
+                </Box>
+              }
             </Box>
           ))}
 
