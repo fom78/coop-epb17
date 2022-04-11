@@ -11,6 +11,7 @@ import EmptyModal from "./EmptyModal";
 import FormPago from "./FormPago";
 import FormSocio from "./FormSocio";
 import { useUser } from "context/UserContext";
+import { useConfig } from "context/ConfigContext";
 
 const initialSocio = {
   'nombre': "",
@@ -24,18 +25,24 @@ const Socio = () => {
   const { sociosRecords } = useSociosRecords()
   const { user } = useUser()
 
+  const {config} = useConfig()
+
   const socio = sociosRecords.filter(e => e.id === parseInt(id))[0] || { ...initialSocio, nombre: 'deleted' }
 
   const { nombre, alumnes, pagos = [] } = socio
 
+  console.log(pagos);
+  /* pagos filtrado por periodo */
+  const pagosPorPeriodo = pagos.filter(p => p.periodo === parseInt(config.periodo_actual))
+
   const count = useMemo(
     () =>
-      pagos.reduce((counter, obj) => {
+    pagosPorPeriodo.reduce((counter, obj) => {
         counter += Number(obj.monto);
 
         return counter;
       }, 0),
-    [pagos],
+    [pagosPorPeriodo],
   );
 
   if (socio.nombre === 'deleted') return <Navigate to="/list" replace={true} />
@@ -165,7 +172,7 @@ const Socio = () => {
           }
           </Box>
 
-          {pagos.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
+          {pagosPorPeriodo.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
             <Box
               key={index}
               _hover={{
