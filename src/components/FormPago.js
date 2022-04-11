@@ -41,14 +41,16 @@ const initialPago = {
  * @returns Return a component of React.
  */
 const FormPago = ({ type, socioId, pagoId = null }) => {
-  const [pago, setPago] = useState(initialPago);
+  const { config } = useConfig()
+
+  const periodos = config.periodos || []
+
+  const [pago, setPago] = useState({...initialPago, periodo:config.periodo_actual});
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
   const { setActualModalOpen } = useUser()
 
-  const { config } = useConfig()
-
-  const periodos = config.periodos || []
+  
 
   const { createPago, editPago, deletePago, sociosRecords } = useSociosRecords()
 

@@ -1,5 +1,5 @@
-import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 import { FaEdit, FaUser, FaChalkboardTeacher, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
@@ -25,25 +25,45 @@ const Socio = () => {
   const { sociosRecords } = useSociosRecords()
   const { user } = useUser()
 
-  const {config} = useConfig()
+
+  const { config } = useConfig()
+
+  const [showPeriodo, setShowPeriodo] = useState(config.periodo_actual)
 
   const socio = sociosRecords.filter(e => e.id === parseInt(id))[0] || { ...initialSocio, nombre: 'deleted' }
 
   const { nombre, alumnes, pagos = [] } = socio
 
-  console.log(pagos);
+  /* Verificar en que periodos fue socio */
+  const periodosSiendoSocio = useMemo(
+    () => {
+      const periodos = config.periodos.map(periodo => {
+        const periodoFounded = pagos.filter(p => parseInt(periodo) === parseInt(p.periodo))
+        if (periodoFounded.length > 0) return periodo
+        return 'no'
+      })
+      return periodos.filter(p => p !== 'no')
+    }
+    ,
+    [pagos, config.periodos],
+  );
+
   /* pagos filtrado por periodo */
-  const pagosPorPeriodo = pagos.filter(p => p.periodo === parseInt(config.periodo_actual))
+  const pagosPorPeriodo = pagos.filter(p => p.periodo === parseInt(showPeriodo))
+
 
   const count = useMemo(
     () =>
-    pagosPorPeriodo.reduce((counter, obj) => {
+      pagosPorPeriodo.reduce((counter, obj) => {
         counter += Number(obj.monto);
 
         return counter;
       }, 0),
     [pagosPorPeriodo],
   );
+
+  // Handlers
+  const handleShowPeriodo = ({ target }) => setShowPeriodo( target.value);
 
   if (socio.nombre === 'deleted') return <Navigate to="/list" replace={true} />
 
@@ -110,22 +130,41 @@ const Socio = () => {
                   </WrapItem>
                 </Wrap>
               ))}
-              <Stack isInline alignItems={"center"}>
+              {periodosSiendoSocio.length && 
+              <Stack isInline alignItems={"center"} >
                 <FaUser color="primary" fontSize={15} />
+                <Text>Periodos: </Text>
                 <chakra.p
                   isTruncated
                   color="secondary.800"
                   fontSize={{ base: "sm", md: "md" }}
                   lineHeight="base"
+                  display='flex' w={'100%'}
+                  gap={4}
                 >
-                  alguna data
+                  {periodosSiendoSocio.map(p => 
+                    <Text key={p}>{p}</Text>
+                    )}
                 </chakra.p>
               </Stack>
+              }
             </Stack>
           </Box>
         </Box>
         {(user.rol === 'admin' || user.rol === 'mod') &&
-          <Box p='1' textAlign={"right"}>
+          <Box p='1' justifyContent={"right"} display={'flex'} gap={4}>
+            <Select
+              type='text'
+              name='periodo'
+              // icon={<MdArrowDropDown />}
+              onChange={handleShowPeriodo}
+              value={showPeriodo}
+              w={'35%'}
+              minLength='1'
+              maxLength='64'
+            >
+              {config.periodos.map((p, index) => <option key={index} value={p}>{p}</option>)}
+            </Select>
             <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
               <FormPago type='add' socioId={parseInt(id)} />
             </EmptyModal>
@@ -138,6 +177,7 @@ const Socio = () => {
           type={false}
         />
 
+        <Heading textAlign={'center'}>Periodo actual: {showPeriodo}</Heading>
         <Box>
           <Box
             alignItems="center"
@@ -164,12 +204,12 @@ const Socio = () => {
               </Box>
             </Box>
             {(user.rol === 'admin' || user.rol === 'mod') &&
-            <Box p='1' display='flex' w={['10%', '15%']}>
-              <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
-                Acciones
-              </ChakraHeading>
-            </Box>
-          }
+              <Box p='1' display='flex' w={['10%', '15%']}>
+                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
+                  Acciones
+                </ChakraHeading>
+              </Box>
+            }
           </Box>
 
           {pagosPorPeriodo.sort((a, b) => a.mes < b.mes ? 1 : -1).map((pago, index) => (
