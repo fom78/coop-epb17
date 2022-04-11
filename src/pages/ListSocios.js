@@ -13,7 +13,6 @@ export function ListSocios() {
   return (
     <>
       <Stack gap={{ base: 3, md: 5 }}>
-        <Box textAlign={"center"}>Listado de Socios</Box>
         <Heading textAlign={"center"}>Listado de Socios</Heading>
         {(user.rol === 'admin' || user.rol === 'mod') &&
           <Box p='1' textAlign={"right"}>

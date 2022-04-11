@@ -45,7 +45,7 @@ const socioToAddOrEdit = (socio) => {
   }
 }
 /**
- * FormAddPago is a form to add a new pago.
+ * FormPago is a form to add a new pago.
  * @name FormSocio
  * @component
  * @category Form
@@ -53,7 +53,7 @@ const socioToAddOrEdit = (socio) => {
  * @param {String} type - Set type modal. Options are add/register.
  * @example
  * <EmptyModal title="Agregar Pago" buttonText="Agregar Pago" >
- *  <FormAddPago type='login' />
+ *  <FormPago type='login' />
  * </EmptyModal>
  * @returns Return a component of React.
  */

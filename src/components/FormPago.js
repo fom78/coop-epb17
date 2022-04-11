@@ -9,39 +9,46 @@ import {
   FormHelperText,
   Input,
   Select,
+  Box,
 } from '@chakra-ui/react';
 import { MdArrowDropDown } from "react-icons/md";
 import Loader from 'components/Loader';
 import { useSociosRecords } from 'context/SociosRecordsContext';
 import { nameMonth, tipoPagos } from 'utils/generals';
 import { useUser } from 'context/UserContext';
+import { useConfig } from 'context/ConfigContext';
 
 const mesActual = new Date().getMonth() + 1
 
+
 const initialPago = {
-  "periodo": 2022,
+  // "periodo": 2023,
   "mes": mesActual,
   "monto": 0,
   "tipo": tipoPagos[0]
 }
 /**
- * FormAddPago is a form to add a new pago.
- * @name FormAddPago
+ * FormPago is a form to add a new pago.
+ * @name FormPago
  * @component
  * @category Form
  * @subcategory EmailPass
  * @param {String} type - Set type modal. Options are add/register.
  * @example
  * <EmptyModal title="Agregar Pago" buttonText="Agregar Pago" >
- *  <FormAddPago type='login' />
+ *  <FormPago type='login' />
  * </EmptyModal>
  * @returns Return a component of React.
  */
-const FormAddPago = ({ type, socioId, pagoId = null }) => {
+const FormPago = ({ type, socioId, pagoId = null }) => {
   const [pago, setPago] = useState(initialPago);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
   const { setActualModalOpen } = useUser()
+
+  const { config } = useConfig()
+
+  const periodos = config.periodos || []
 
   const { createPago, editPago, deletePago, sociosRecords } = useSociosRecords()
 
@@ -51,12 +58,12 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
       const pagoToEditOrDelete = socio.pagos.filter(p => p.id === pagoId)[0]
       setPago(pagoToEditOrDelete)
     }
-  
+
     return () => {
-      
+
     }
   }, [pagoId, sociosRecords])
-  
+
 
   // Define the submit button
   let btnProps = {}
@@ -88,7 +95,7 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
       break;
   }
 
- 
+
   // Handlers
   const handlePago = ({ target }) => setPago({ ...pago, [target.name]: target.value });
 
@@ -103,11 +110,11 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
         msg = 'Pago agregado correctamente 👏'
       }
       if (type === 'edit') {
-        await editPago( pagoId, socioId, pago )
+        await editPago(pagoId, socioId, pago)
         msg = 'Pago Modificado correctamente 👏'
       }
       if (type === 'delete') {
-        await deletePago( pagoId, socioId )
+        await deletePago(pagoId, socioId)
         msg = 'Pago Eliminado correctamente 👏'
       }
 
@@ -129,6 +136,26 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
     <Flex align='center' justify='center'>
       <form onSubmit={onSubmit} >
         <>
+        <Box d={'flex'} gap={3}>
+        <FormControl
+            // isInvalid={!isValidEmail(email)}
+            isRequired
+            id='input-periodo'
+          >
+            <FormLabel>Periodo</FormLabel>
+            <Select
+              type='text'
+              name='periodo'
+              icon={<MdArrowDropDown />}
+              onChange={handlePago}
+              value={pago.periodo || config.periodo_actual}
+              minLength='1'
+              maxLength='64'
+              disabled={type === 'delete'}
+            >
+              {periodos.map((p, index) => <option key={index} value={p}>{p}</option>)}
+            </Select>
+          </FormControl>
           <FormControl
             // isInvalid={!isValidEmail(email)}
             isRequired
@@ -149,6 +176,9 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
             </Select>
             <FormHelperText>Seleccione un mes.</FormHelperText>
           </FormControl>
+
+        </Box>
+
           <FormControl
             // isInvalid={!isValidEmail(email)}
             isRequired
@@ -204,4 +234,4 @@ const FormAddPago = ({ type, socioId, pagoId = null }) => {
   );
 };
 
-export default FormAddPago;
+export default FormPago;

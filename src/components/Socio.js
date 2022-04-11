@@ -8,7 +8,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import StaggeredSlideFade from "./StaggeredSlideFade";
 import EmptyModal from "./EmptyModal";
-import FormAddPago from "./FormAddPago";
+import FormPago from "./FormPago";
 import FormSocio from "./FormSocio";
 import { useUser } from "context/UserContext";
 
@@ -120,7 +120,7 @@ const Socio = () => {
         {(user.rol === 'admin' || user.rol === 'mod') &&
           <Box p='1' textAlign={"right"}>
             <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
-              <FormAddPago type='add' socioId={parseInt(id)} />
+              <FormPago type='add' socioId={parseInt(id)} />
             </EmptyModal>
           </Box>
         }
@@ -192,10 +192,10 @@ const Socio = () => {
               {(user.rol === 'admin' || user.rol === 'mod') &&
                 <Box p='1' display='flex' w={['10%', '15%']}>
                   <EmptyModal title='Editar el pago' buttonText={<FaEdit />} colorScheme={'blue'} variant={'ghost'}>
-                    <FormAddPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
+                    <FormPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
                   </EmptyModal>
                   <EmptyModal title='Eliminar el pago' buttonText={<FaTrash />} colorScheme={'red'} variant={'ghost'}>
-                    <FormAddPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
+                    <FormPago type='delete' socioId={parseInt(id)} pagoId={pago.id} />
                   </EmptyModal>
                 </Box>
               }
