@@ -10,7 +10,6 @@ import Loader from "components/Loader";
 
 export function Home() {
   const { sociosRecords, loading } = useSociosRecords()
-  const date = Date.now()
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
   const matches = useMemo(() => {
@@ -99,7 +98,7 @@ export function Home() {
               Para iniciar la busqueda en nuestro sistema ingrese el nombre de un socio
             </FormLabel>
           </Box>
-          {search.length && <SociosTablet date={date} totalData={sociosRecords.length} socios={matches} />}
+          {search.length && <SociosTablet totalData={sociosRecords.length} socios={matches} />}
         </Stack>
         <Spacer h={'50px'}/>
       </>

@@ -54,6 +54,18 @@ export function ConfigContextProvider({ children }) {
     }
   }
 
+  
+const putUltimoUpdate = async () => {
+  const date = Date.now()
+  try {
+    const res = await configService.editConfigRequest('ultimo_update', date)
+    if (res.status === 204) setConfig({...config, ultimo_update:date})
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
   useEffect(() => {
     getConfig()
 
@@ -70,6 +82,7 @@ export function ConfigContextProvider({ children }) {
         getConfig,
         config,
         setConfig,
+        putUltimoUpdate,
       }}
     >
       {children}

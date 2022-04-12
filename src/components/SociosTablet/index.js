@@ -1,13 +1,16 @@
 import { Box, Heading } from "@chakra-ui/react";
 import SocioNotFound from "components/SocioNotFound";
 import StaggeredSlideFade from "components/StaggeredSlideFade";
+import { useConfig } from "context/ConfigContext";
 
 import { timeSince } from 'utils/generals';
 
 import SocioCard from "./SocioCard";
 
 
-const SociosTablet = ({ socios, totalData, date }) => {
+const SociosTablet = ({ socios, totalData }) => {
+  
+  const {config} = useConfig()
 
   return (
     <>
@@ -42,7 +45,7 @@ const SociosTablet = ({ socios, totalData, date }) => {
               fontWeight={"bold"}
               textAlign="center"
             >
-              Ultima actualizacion {timeSince(date)}
+             Ultima actualizacion {timeSince(config.ultimo_update)}
             </Heading>
           </Box>
         </Box>

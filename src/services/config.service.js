@@ -11,6 +11,11 @@ class ConfigService {
       { headers: { 'apikey': API_KEY} })
   }
 
+  editConfigRequest  (item,valor) {
+    return  axios.patch(`${API_URL}config?item=eq.${item}`, {valor},
+      { headers: { 'apikey': API_KEY} })
+  }
+
 }
 
 export default new ConfigService()

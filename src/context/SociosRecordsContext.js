@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { createContext, useContext, useEffect, useState } from 'react'
 import sociosService from 'services/socios.service'
+import { useConfig } from './ConfigContext'
 
 const sociosRecordsContext = createContext()
 
@@ -18,14 +19,15 @@ const getSociosRecordsFromLocalStore = () => {
 };
 
 export function SociosRecordsContextProvider({ children }) {
+
+  const {putUltimoUpdate} = useConfig()
   const [sociosRecords, setSociosRecords] = useState(getSociosRecordsFromLocalStore())
   const [fetchingSocios, setfetchingSocios] = useState(true)
   const [loading, setLoading] = useState(false)
   const [noError, setNoError] = useState(true)
 
-
-
-  const getSocios = async () => {
+  
+const getSocios = async () => {
 
     try {
       setLoading(true)
@@ -60,6 +62,7 @@ export function SociosRecordsContextProvider({ children }) {
       setLoading(true)
       await sociosService.createSocioRequest(socio);
       await getSocios()
+      await putUltimoUpdate()
     } catch (error) {
       console.error(error);
     } finally {
@@ -71,7 +74,10 @@ export function SociosRecordsContextProvider({ children }) {
     try {
       const res = await sociosService.editSocioRequest(socioId, data);
 
-      if (res.status === 204) setSociosRecords(sociosRecords.map(s => s.id === socioId ? { ...s, ...data } : s))
+      if (res.status === 204) {
+        setSociosRecords(sociosRecords.map(s => s.id === socioId ? { ...s, ...data } : s))
+        await putUltimoUpdate()
+      }
 
     } catch (error) {
       console.error(error);
@@ -83,7 +89,7 @@ export function SociosRecordsContextProvider({ children }) {
       await sociosService.deleteLogicalSocioRequest(socioId);
 
       setSociosRecords(sociosRecords.filter(s => s.id !== socioId))
-
+      await putUltimoUpdate()
     } catch (error) {
       console.error(error);
     }
@@ -95,16 +101,8 @@ export function SociosRecordsContextProvider({ children }) {
       await sociosService.createPagoRequest(pago);
       // Al no tener el id del ultimo pago agregado, para actualizar el estado correctamente debemos obtener los usuarios.
       await getSocios()
-      // // Buscar el socio pagante y actualizarle el pago en el estado
-      // let socioFounded = sociosRecords.filter(s => s.id === pago.socio_id)[0]
-
-      // delete pago.socio_id
-      // pago.monto = parseInt(pago.monto)
-      // pago.mes = parseInt(pago.mes)
-
-      // socioFounded.pagos.push(pago)
-
-      // setSociosRecords([...sociosRecords, socioFounded[0]])
+      await putUltimoUpdate()
+      
     } catch (error) {
       console.error(error);
     }
@@ -117,6 +115,7 @@ export function SociosRecordsContextProvider({ children }) {
       let socioFounded = sociosRecords.filter(s => s.id === socioId)[0]
       socioFounded.pagos = socioFounded.pagos.filter(p => p.id !== pagoId)
       setSociosRecords(sociosRecords.map(s => s.id === socioId ? socioFounded : s))
+      await putUltimoUpdate()
 
     } catch (error) {
       console.error(error);
@@ -134,6 +133,7 @@ export function SociosRecordsContextProvider({ children }) {
 
       socioFounded.pagos = socioFounded.pagos.map(p => p.id === pagoId ? data : p)
       setSociosRecords(sociosRecords.map(s => s.id === socioId ? socioFounded : s))
+      await putUltimoUpdate()
 
     } catch (error) {
       console.error(error);

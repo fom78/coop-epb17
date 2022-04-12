@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { FaEdit, FaUser, FaChalkboardTeacher, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
-import { parseCurrency, parseMonth } from 'utils/generals';
+import { parseCurrency, parseMonth, timeSince } from 'utils/generals';
 import { Navigate, useParams } from "react-router-dom";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import StaggeredSlideFade from "./StaggeredSlideFade";
@@ -19,14 +19,11 @@ const initialSocio = {
   'alumnes': []
 }
 const Socio = () => {
-
+  const {config} = useConfig()
   const params = useParams()
   const { id } = params
   const { sociosRecords } = useSociosRecords()
   const { user } = useUser()
-
-
-  const { config } = useConfig()
 
   const [showPeriodo, setShowPeriodo] = useState(config.periodo_actual)
 
@@ -256,7 +253,7 @@ const Socio = () => {
               fontWeight={"bold"}
               textAlign="center"
             >
-              Recueda que el sistema se actualiza todos los viernes
+              Ultima actualización del sistema {timeSince(config.ultimo_update)}
             </ChakraHeading>
           </Box>
         </Box>

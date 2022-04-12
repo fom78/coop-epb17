@@ -7,7 +7,6 @@ import { useUser } from "context/UserContext";
 
 export function ListSocios() {
   const { sociosRecords } = useSociosRecords()
-  const date = Date.now()
   const { user } = useUser()
 
   return (
@@ -21,7 +20,7 @@ export function ListSocios() {
             </EmptyModal>
           </Box>
         }
-        <SociosTablet date={date} totalData={sociosRecords.length} socios={sociosRecords} />
+        <SociosTablet totalData={sociosRecords.length} socios={sociosRecords} />
       </Stack>
     </>
   )
