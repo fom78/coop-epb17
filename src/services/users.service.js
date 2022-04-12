@@ -1,7 +1,7 @@
 import axios from 'axios'
-const HOST = 'https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/'
+const HOST = `${process.env.REACT_APP_SUPABASE_URL}`
 const API_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY
-const API_URL = `${HOST}`
+const API_URL = `${HOST}/rest/v1/`
 
 class UsersService {
  

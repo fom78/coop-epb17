@@ -6,9 +6,11 @@ import AlertInfo from "components/AlertInfo";
 import SociosTablet from "components/SociosTablet";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import Loader from "components/Loader";
+import { useConfig } from "context/ConfigContext";
 
 
 export function Home() {
+  const { config } = useConfig()
   const { sociosRecords, loading } = useSociosRecords()
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
@@ -49,7 +51,7 @@ export function Home() {
               </chakra.h1>
 
               <chakra.p color="secondary.800" fontSize={{ base: "xs", md: "xl" }} lineHeight="base">
-                Escuela Primaria N° 17 de Campana
+                {config.nombre_cooperadora}
               </chakra.p>
             </Box>
           </Box>
