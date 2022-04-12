@@ -60,6 +60,13 @@ export function Home() {
                 "Hola! Bienvenido a la web de la Cooperadora, aqui podras encontrar diferentes preguntas sobre la misma y un sistema donde podras buscar tus pagos de cuota societaria."
               }
             />
+            {process.env.REACT_APP_SUPABASE_URL === 'https://ylaeysbjzipwibjrfiuf.supabase.co' && 
+            <AlertInfo
+            type={false}
+            msg={
+              <Box display={'flex'} direction={'column'}><span>Usuario administrador para pruebas</span><span>email:  <b>admin@coop.edu</b></span><span>clave: <b>123456</b></span></Box>
+            }
+          />}
           <Box
             as={"form"}
             bg="white"
