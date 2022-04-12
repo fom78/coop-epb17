@@ -62,7 +62,7 @@ const FormPago = ({ type, socioId, pagoId = null }) => {
     }
 
     return () => {
-
+      setPago({...initialPago, periodo:config.periodo_actual})
     }
   }, [pagoId, sociosRecords])
 

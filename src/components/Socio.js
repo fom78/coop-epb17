@@ -134,7 +134,7 @@ const Socio = () => {
               <Stack isInline alignItems={"center"} >
                 <FaUser color="primary" fontSize={15} />
                 <Text>Periodos: </Text>
-                <chakra.p
+                <chakra.span
                   isTruncated
                   color="secondary.800"
                   fontSize={{ base: "sm", md: "md" }}
@@ -145,7 +145,7 @@ const Socio = () => {
                   {periodosSiendoSocio.map(p => 
                     <Text key={p}>{p}</Text>
                     )}
-                </chakra.p>
+                </chakra.span>
               </Stack>
               }
             </Stack>
