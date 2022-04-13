@@ -181,7 +181,7 @@ const Questions = () => {
                     ({config.direccion})
                   </Text>
                 </Box>
-
+                {console.log('rrrr',config.direccion_google_maps,config)}
                 <Link
                   isExternal
                   fontSize={{base: "xs", md: "md"}}
