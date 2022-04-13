@@ -64,7 +64,11 @@ export function Home() {
             <AlertInfo
             type={false}
             msg={
-              <Box display={'flex'} direction={'column'}><span>Usuario administrador para pruebas</span><span>email:  <b>admin@coop.edu</b></span><span>clave: <b>123456</b></span></Box>
+              <Stack display={'flex'} >
+                <Box>Usuario administrador para pruebas</Box>
+                <Box>email:  <b>admin@coop.edu</b></Box>
+                <Box>clave: <b>123456</b></Box>
+              </Stack>
             }
           />}
           <Box

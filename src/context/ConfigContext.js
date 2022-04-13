@@ -66,6 +66,16 @@ const putUltimoUpdate = async () => {
   }
 }
 
+const editConfig = async (item, valor) => {
+  try {
+    const res = await configService.editConfigRequest(item, valor)
+    if (res.status === 204) setConfig({...config, [item]:valor})
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
   useEffect(() => {
     getConfig()
 
@@ -83,6 +93,7 @@ const putUltimoUpdate = async () => {
         config,
         setConfig,
         putUltimoUpdate,
+        editConfig,
       }}
     >
       {children}
