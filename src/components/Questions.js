@@ -12,10 +12,13 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
+import { useConfig } from "context/ConfigContext";
 
 
 
 const Questions = () => {
+  const {config}=useConfig()
+
   return (
     <Stack gap={5}>
       <Box mx="auto" textAlign={"center"} w={"95%"}>
@@ -41,10 +44,10 @@ const Questions = () => {
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-            Las Clases inician el lunes 2 de marzo de 2022.
+            Las Clases inician el {config.fecha_inicio_clases}.
             <UnorderedList>
-              <ListItem>Turno Mañana: 9 Hs.</ListItem>
-              <ListItem> Turno Tarde: 13.30 Hs.</ListItem>
+              <ListItem>Turno Mañana: {config.hora_inicio_manana} Hs.</ListItem>
+              <ListItem> Turno Tarde: {config.hora_inicio_tarde} Hs.</ListItem>
             </UnorderedList>
           </AccordionPanel>
         </AccordionItem>
@@ -57,7 +60,12 @@ const Questions = () => {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel pb={4}>{`El valor es $1.500,00 anual`}</AccordionPanel>
+          <AccordionPanel pb={4}>
+            {`El valor es ${config.valor_cuota_anual} anual`}
+            {config.valor_cuota_mensual && 
+              <Box>{`Puede pagar ${config.valor_cuota_mensual} por mes, que es el valor de la cuota mensual.`}</Box>
+            }
+          </AccordionPanel>
         </AccordionItem>
 
         <AccordionItem>
@@ -160,7 +168,7 @@ const Questions = () => {
                   isExternal
                   fontSize={{base: "xs", md: "md"}}
                   fontWeight={600}
-                  href="https://www.facebook.com/CFP402BSSO"
+                  href={config.facebook}
                   textAlign="center"
                 >
                   Abrir Facebook
@@ -170,7 +178,7 @@ const Questions = () => {
                 <Box>
                   <Text fontWeight={500}>Sede Central </Text>
                   <Text fontSize={{base: "xs", md: "md"}}>
-                    (Calle 12 y 170 S/N - Berisso - Buenos Aires)
+                    ({config.direccion})
                   </Text>
                 </Box>
 
@@ -178,7 +186,7 @@ const Questions = () => {
                   isExternal
                   fontSize={{base: "xs", md: "md"}}
                   fontWeight={600}
-                  href="https://www.google.com/maps/place/Centro+de+Formacion+Profesional+N%C2%BA+402+CPF/@-34.8670621,-57.8799674,15z/data=!4m2!3m1!1s0x0:0x77296847a7e72471?sa=X&ved=2ahUKEwid0euSicv2AhWqFLkGHQ_HBPoQ_BJ6BAgzEAU"
+                  href={config.direccion_google_maps}
                   textAlign="center"
                 >
                   Google Maps
@@ -187,8 +195,8 @@ const Questions = () => {
 
               <Stack isInline alignItems={"center"} justifyContent={"space-between"}>
                 <Text fontWeight={500}>Telefono</Text>
-                <Link fontSize={{base: "xs", md: "md"}} fontWeight={600} href="tel:221-461-3712">
-                  221 461 3712
+                <Link fontSize={{base: "xs", md: "md"}} fontWeight={600} href={`tel:${config.telefono_link}`}>
+                {config.telefono_texto}
                 </Link>
               </Stack>
             </Stack>
