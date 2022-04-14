@@ -3,9 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import { Faq, Home, ListSocios, NotFound } from 'pages';
 import { ProtectedRoute } from "components/ProtectedRoute";
 import { Admin } from "pages/Admin";
+import { Container } from "@chakra-ui/react";
 
 function AllRoutes() {
   return (
+    <Container maxW='4xl' bg='white.600' centerContent>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
@@ -15,6 +17,7 @@ function AllRoutes() {
       <Route path="/admin" element={<ProtectedRoute rolConAcceso="admin"><Admin /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </Container>
   )
 }
 export default AllRoutes;

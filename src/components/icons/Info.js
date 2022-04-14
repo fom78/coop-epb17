@@ -8,8 +8,8 @@ const Info = (props) => {
         alignItems={"center"}
         bg={"teal"}
         // bg={"primary"}
-        color={"secondary"}
-        // color={"tertiary"}
+        // color={"secondary"}
+        color={"tertiary"}
         display={"inline-flex"}
         height={12}
         justifyContent={"center"}
