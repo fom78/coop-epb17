@@ -26,7 +26,7 @@ const NavBar = () => {
   const navigate = useNavigate()
   // Render
   return (
-    <Flex align='center' justify='center'>
+    <Flex align='center' justify='center' mt={2}>
       {user.isLogged ? (
         <>
           {/* Logged. */}
@@ -43,7 +43,7 @@ const NavBar = () => {
           </Box>
           <Spacer />
           <Box m='1'>
-            <ColorModeSwitcher />
+            {/* <ColorModeSwitcher /> */}
             <LogoutButton />
           </Box>
         </>
@@ -51,7 +51,7 @@ const NavBar = () => {
         <>
           {/* Not logged. */}
           <Box p='1'>
-            <ColorModeSwitcher />
+            {/* <ColorModeSwitcher /> */}
           </Box>
           <Spacer />
           <Box p='1'>

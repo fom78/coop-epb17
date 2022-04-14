@@ -31,8 +31,8 @@ const DrawerNav = ({ position = 'left' }) => {
 
   return (
     <Box>
-      <Button colorScheme='teal' onClick={onOpen} size='xs'>
-        <HamburgerIcon />
+      <Button colorScheme='teal' onClick={onOpen} size='md'>
+        <HamburgerIcon w={7} h={8} />
       </Button>
       <Drawer
         placement={position}

@@ -1,6 +1,6 @@
 import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { FaEdit, FaUser, FaChalkboardTeacher, FaAngleRight, FaTrash } from "react-icons/fa";
+import { FaEdit, FaUser, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
 import { parseCurrency, parseMonth, timeSince } from 'utils/generals';
@@ -12,6 +12,7 @@ import FormPago from "./FormPago";
 import FormSocio from "./FormSocio";
 import { useUser } from "context/UserContext";
 import { useConfig } from "context/ConfigContext";
+import { IoSchool } from "react-icons/io5";
 
 const initialSocio = {
   'nombre': "",
@@ -99,7 +100,7 @@ const Socio = () => {
               {alumnes && alumnes.map((alumne, index) => (
                 <Wrap key={index}>
                   <WrapItem alignItems="center">
-                    <FaChalkboardTeacher color="primary" fontSize={"20px"} />
+                    <IoSchool color="primary" fontSize={"20px"} />
                     <chakra.p
                       isTruncated
                       color="secondary.800"
@@ -129,7 +130,7 @@ const Socio = () => {
               ))}
               {periodosSiendoSocio.length && 
               <Stack isInline alignItems={"center"} >
-                <FaUser color="primary" fontSize={15} />
+                <FaCalendarCheck color="primary" fontSize={15} />
                 <Text>Periodos: </Text>
                 <chakra.span
                   isTruncated
