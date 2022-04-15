@@ -45,7 +45,7 @@ const FormPago = ({ type, socioId, pagoId = null }) => {
 
   const periodos = config.periodos || []
 
-  const [pago, setPago] = useState({...initialPago, periodo:config.periodo_actual});
+  const [pago, setPago] = useState({...initialPago, periodo:config.periodo_actual, monto: config.valor_cuota_anual});
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false)
   const { setActualModalOpen } = useUser()
@@ -99,7 +99,12 @@ const FormPago = ({ type, socioId, pagoId = null }) => {
 
 
   // Handlers
-  const handlePago = ({ target }) => setPago({ ...pago, [target.name]: target.value });
+  const handlePago = ({ target }) => {
+    if (target.name === 'tipo' && target.value === tipoPagos[1]) {
+      return setPago({ ...pago, [target.name]: target.value, monto: config.valor_cuota_mensual })
+    }
+    return setPago({ ...pago, [target.name]: target.value })
+};
 
   const onSubmit = async (event) => {
     event.preventDefault();

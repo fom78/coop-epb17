@@ -8,10 +8,14 @@ import { timeSince } from 'utils/generals';
 import SocioCard from "./SocioCard";
 
 
-const SociosTablet = ({ socios, totalData }) => {
+const SociosTablet = ({ socios }) => {
   
+  const totalData = socios.length
   const {config} = useConfig()
 
+  socios.sort((a,b) =>  b.id - a.id)
+
+  
   return (
     <>
       <StaggeredSlideFade>
