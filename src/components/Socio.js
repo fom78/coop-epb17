@@ -1,4 +1,4 @@
-import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select } from "@chakra-ui/react";
+import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select, Link } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { FaEdit, FaUser, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
 
@@ -142,7 +142,7 @@ const Socio = () => {
                   gap={4}
                 >
                   {periodosSiendoSocio.map(p => 
-                    <Text key={p}>{p}</Text>
+                    <Link key={p} onClick={()=>setShowPeriodo(p)} color={showPeriodo===p ? 'blue' : 'inherit'}>{p}</Link>
                     )}
                 </chakra.span>
               </Stack>
