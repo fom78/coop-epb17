@@ -1,6 +1,6 @@
 import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select, Link } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { FaEdit, FaUser, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
+import { FaEdit, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
 import { parseCurrency, parseMonth, timeSince } from 'utils/generals';

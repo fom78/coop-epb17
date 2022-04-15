@@ -7,6 +7,7 @@ import SociosTablet from "components/SociosTablet";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import Loader from "components/Loader";
 import { useConfig } from "context/ConfigContext";
+import { useUser } from "context/UserContext";
 
 const textSize = ['.95rem', '1.25rem', '1.65rem', '1.95rem']
 
@@ -14,6 +15,7 @@ const textSize = ['.95rem', '1.25rem', '1.65rem', '1.95rem']
 export function Home() {
   const { config } = useConfig()
   const { sociosRecords, loading } = useSociosRecords()
+  const { user } = useUser()
   const [inputValue, setInputValue] = useState("");
   const [search, setSearch] = useState("");
   const matches = useMemo(() => {
@@ -36,8 +38,8 @@ export function Home() {
       }
       return true
     });
-    return [...matchSocios, ...matchAlumnes]
-  }, [sociosRecords, search]);
+    return user.rol === 'admin' ? [...matchSocios, ...matchAlumnes] : matchSocios
+  }, [sociosRecords, search, user]);
 
   const inputRef = useRef(null);
 
@@ -114,6 +116,11 @@ export function Home() {
           <FormLabel color={"secondary.700"} fontSize={"xs"} ml={2} mt={1}>
             Para iniciar la busqueda en nuestro sistema ingrese el nombre de un socio
           </FormLabel>
+          {user.rol === 'admin' && 
+            <FormLabel color={"secondary.700"} fontSize={"xs"} ml={2} mt={1}>
+              <b>Modo Admin:</b> Puede buscar el socio por nombre de alumno.
+            </FormLabel>
+          }
         </Box>
         {search.length && <SociosTablet totalData={sociosRecords.length} socios={matches} />}
       </Stack>
