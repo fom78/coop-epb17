@@ -9,6 +9,9 @@ import LogoutButton from './LogoutButton';
 // context
 import { useUser } from 'context/UserContext';
 import { useNavigate } from 'react-router-dom';
+
+const textSize = ['.65rem','.75rem','.85rem','.95rem']
+
 /**
  * NavBar is the Main bar of APP, with menu, sign up and sing in.
  * @name NavBar
@@ -56,16 +59,16 @@ const NavBar = () => {
           </Box>
           <Spacer />
           <Box p='1'>
-            <Link mr={4} onClick={()=>navigate('/')}>Inicio</Link>
-            <Link onClick={()=>navigate('/faq')}>FAQ's</Link>
+            <Link mr={4} fontSize={textSize} onClick={()=>navigate('/')}>Inicio</Link>
+            <Link fontSize={textSize} onClick={()=>navigate('/faq')}>FAQ's</Link>
           </Box>
           <Spacer />
 
           <Box p='1'>
-            <EmptyModal title='Sign In on APP' buttonText='Sign In'>
+            <EmptyModal title='Sign In on APP' fontSize={textSize} buttonText='Sign In'>
               <FormEmailPass type='login' />
             </EmptyModal>
-            <EmptyModal title='Sign Up on APP' buttonText='Sign Up'>
+            <EmptyModal title='Sign Up on APP' fontSize={textSize} buttonText='Sign Up'>
               <FormEmailPass type='register' />
             </EmptyModal>
           </Box>

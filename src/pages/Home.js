@@ -8,6 +8,8 @@ import { useSociosRecords } from "context/SociosRecordsContext";
 import Loader from "components/Loader";
 import { useConfig } from "context/ConfigContext";
 
+const textSize = ['.95rem','1.25rem','1.65rem','1.95rem']
+
 
 export function Home() {
   const { config } = useConfig()
@@ -42,7 +44,7 @@ export function Home() {
             <Box textAlign={"center"} w={"95%"}>
               <chakra.h1
                 color={"gray.900"}
-                fontSize={{ base: "4xl", md: "6xl" }}
+                fontSize={textSize}
                 fontWeight={{ base: "bold", md: "extrabold" }}
                 lineHeight="shorter"
                 mb={3}
