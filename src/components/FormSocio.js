@@ -142,7 +142,7 @@ const FormSocio = ({ type, socioId = null }) => {
     } finally {
       setActualModalOpen(false)
       if (type === 'add') {
-        navigate('/list')
+        navigate('/list?periodo=todos')
       }
       toast.success(msg)
     }

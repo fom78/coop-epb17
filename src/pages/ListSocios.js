@@ -5,7 +5,8 @@ import SociosTablet from "components/SociosTablet";
 import { useConfig } from "context/ConfigContext";
 import { useSociosRecords } from "context/SociosRecordsContext";
 import { useUser } from "context/UserContext";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const textSize = ['.95rem', '1.15rem', '1.35rem', '1.35rem']
 
@@ -15,8 +16,21 @@ export function ListSocios() {
   const { sociosRecords } = useSociosRecords()
   const { user } = useUser()
 
+  const [searchParams] = useSearchParams({});
+  const periodo = searchParams.get("periodo");
+
   const [showPeriodo, setShowPeriodo] = useState(config.periodo_actual)
 
+  useEffect(() => {
+    if (searchParams.get("periodo")) {
+      setShowPeriodo(searchParams.get("periodo"))
+    }
+  
+    return () => {
+      setShowPeriodo(config.periodo_actual)
+    }
+  }, [searchParams, config])
+  
 
   /* Verificar en que periodos fue socio */
   const socioEnPeriodoActual = useMemo(
