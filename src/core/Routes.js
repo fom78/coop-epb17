@@ -7,7 +7,17 @@ import { Container } from "@chakra-ui/react";
 
 function AllRoutes() {
   return (
-    <Container maxW='4xl' bg='white.600' centerContent>
+    <Container 
+      maxW={[
+        '100%', // 0-30em
+        '75%', // 30em-48em
+        '75%', // 48em-62em
+        '75%', // 62em+
+      ]} 
+      // maxW='4xl' 
+      bg='white.600' 
+      centerContent
+    >
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />

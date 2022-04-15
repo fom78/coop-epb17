@@ -2,12 +2,10 @@ import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Inp
 import toast from "react-hot-toast";
 
 import { useConfig } from "context/ConfigContext";
-import { useUser } from "context/UserContext";
 import { useState } from "react";
 
 export function Admin() {
   const { config, editConfig } = useConfig()
-  const { user } = useUser()
 
   const [item, setItem] = useState()
   const [showEditForm, setShowEditForm] = useState(false)
@@ -62,7 +60,7 @@ export function Admin() {
                   placeholder='Nombre del socio'
                   onChange={handleValorItemToEdit}
                   value={valorItemToEdit}
-                  minLength='3'
+                  minLength='1'
                   maxLength='64'
                 />
                 <FormHelperText>Coloque el nuevo valor</FormHelperText>

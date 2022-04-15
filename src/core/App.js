@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Container } from '@chakra-ui/react'
 import { SociosRecordsContextProvider } from 'context/SociosRecordsContext'
 import { UserContextProvider } from 'context/UserContext'
 import { ConfigContextProvider } from 'context/ConfigContext'
@@ -16,10 +16,12 @@ function App() {
       <UserContextProvider>
       <ConfigContextProvider>
         <SociosRecordsContextProvider>
-          <NavBar />
-          <AllRoutes />
-          <Footer />
-          <Toaster />
+          <Container  overflow={'hidden'} w={['100%']} border={['1px solid red','1px solid black','1px solid green','1px solid blue']}>
+            <NavBar />
+            <AllRoutes />
+            <Footer />
+            <Toaster />
+          </Container>
         </SociosRecordsContextProvider>
       </ConfigContextProvider>
       </UserContextProvider>

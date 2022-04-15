@@ -26,7 +26,7 @@ const NavBar = () => {
   const navigate = useNavigate()
   // Render
   return (
-    <Flex align='center' justify='center' mt={2}>
+    <Flex align='center' justify='center' mt={2} mb={4}>
       {user.isLogged ? (
         <>
           {/* Logged. */}
@@ -36,7 +36,8 @@ const NavBar = () => {
           <Spacer />
           <Box>
             <Heading
-              fontSize={{ base: '24px', sm: '12px', md: '24px', lg: '42px' }}
+              fontSize={{ base: '12px', sm: '12px', md: '24px', lg: '42px' }}
+              textAlign={'center'}
             >
               Hola {user.email.split('@')[0]} <Badge variant='outline' colorScheme='blue'>{user.rol}</Badge>
             </Heading>

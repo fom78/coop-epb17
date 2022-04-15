@@ -46,7 +46,7 @@ const EmptyModal = ({ children, title, buttonText, ...rest }) => {
   return (
     <>
       {/* Button Show */}
-      <Button onClick={()=>handleOpenModal()}  mr='4' {...rest} >
+      <Button onClick={()=>handleOpenModal()}  mr='4' minWidth={'3rem'} {...rest} >
         {buttonText}
       </Button>
       {/* Modal */}
