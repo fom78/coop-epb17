@@ -1,6 +1,6 @@
 import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select, Link } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { FaEdit, FaUser, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
+import { FaEdit, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
 
 import AlertInfo from 'components/AlertInfo';
 import { parseCurrency, parseMonth, timeSince } from 'utils/generals';
@@ -14,14 +14,14 @@ import { useUser } from "context/UserContext";
 import { useConfig } from "context/ConfigContext";
 import { IoSchool } from "react-icons/io5";
 
-const textSize = ['.65rem','.75rem','.85rem','.95rem']
+const textSize = ['.65rem', '.75rem', '.85rem', '.95rem']
 const initialSocio = {
   'nombre': "",
   'pagos': [],
   'alumnes': []
 }
 const Socio = () => {
-  const {config} = useConfig()
+  const { config } = useConfig()
   const params = useParams()
   const { id } = params
   const { sociosRecords } = useSociosRecords()
@@ -62,13 +62,19 @@ const Socio = () => {
   );
 
   // Handlers
-  const handleShowPeriodo = ({ target }) => setShowPeriodo( target.value);
+  const handleShowPeriodo = ({ target }) => setShowPeriodo(target.value);
 
   if (socio.nombre === 'deleted') return <Navigate to="/list" replace={true} />
 
   return (
     <Stack gap={5} mb={12}>
-
+      {(user.rol === 'admin' || user.rol === 'mod') &&
+      <Box p='1' textAlign={"center"} >
+        <EmptyModal title='Agregar un socio' fontSize={textSize} colorScheme={'blue'} buttonText='Agregar nuevo Socio'>
+          <FormSocio type='add' />
+        </EmptyModal>
+      </Box>
+}
       <StaggeredSlideFade>
         <Box mt={{ base: "none", sm: 8, lg: 12 }} mx="auto" py={18}>
           <Box mx="auto" textAlign={"center"} w={"95%"}>
@@ -129,28 +135,29 @@ const Socio = () => {
                   </WrapItem>
                 </Wrap>
               ))}
-              {periodosSiendoSocio.length && 
-              <Stack isInline alignItems={"center"} >
-                <FaCalendarCheck color="primary" fontSize={15} />
-                <Text>Periodos: </Text>
-                <chakra.span
-                  isTruncated
-                  color="secondary.800"
-                  fontSize={{ base: "sm", md: "md" }}
-                  lineHeight="base"
-                  display='flex' w={'100%'}
-                  gap={4}
-                >
-                  {periodosSiendoSocio.map(p => 
-                    <Link key={p} onClick={()=>setShowPeriodo(p)} color={showPeriodo===p ? 'blue' : 'inherit'}>{p}</Link>
+              {periodosSiendoSocio.length &&
+                <Stack isInline alignItems={"center"} >
+                  <FaCalendarCheck color="primary" fontSize={'40px'} />
+                  <Text>Periodos: </Text>
+                  <chakra.span
+                    isTruncated
+                    color="secondary.800"
+                    fontSize={{ base: "sm", md: "md" }}
+                    lineHeight="base"
+                    display='flex' w={'100%'}
+                    gap={4}
+                  >
+                    {periodosSiendoSocio.map(p =>
+                      <Link key={p} onClick={() => setShowPeriodo(p)} color={showPeriodo === p ? 'blue' : 'inherit'}>{p}</Link>
                     )}
-                </chakra.span>
-              </Stack>
+                  </chakra.span>
+                </Stack>
               }
             </Stack>
           </Box>
         </Box>
         {(user.rol === 'admin' || user.rol === 'mod') &&
+
           <Box p='1' justifyContent={"right"} display={'flex'} gap={4}>
             <Select
               type='text'
@@ -164,7 +171,7 @@ const Socio = () => {
             >
               {config.periodos.map((p, index) => <option key={index} value={p}>{p}</option>)}
             </Select>
-            <EmptyModal title='Agregar un pago' buttonText='Agregar Pago'>
+            <EmptyModal title='Agregar un pago' fontSize={textSize} buttonText='Agregar Pago'>
               <FormPago type='add' socioId={parseInt(id)} />
             </EmptyModal>
           </Box>

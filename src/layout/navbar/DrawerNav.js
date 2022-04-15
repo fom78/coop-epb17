@@ -14,6 +14,11 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link as WouterLink } from 'react-router-dom';
 import { useUser } from 'context/UserContext';
+import EmptyModal from 'components/EmptyModal';
+import FormSocio from 'components/FormSocio';
+
+const textSize = ['.65rem', '.75rem', '.85rem', '.95rem']
+
 /**
  * Drawer is a menu-nav style drawer.
  * @name DrawerNav
@@ -68,6 +73,14 @@ const DrawerNav = ({ position = 'left' }) => {
                     Administración
                   </Button>
                 </Link>
+                
+              }
+              <Spacer />
+
+              {(user.rol === 'admin' || user.rol === 'mod') &&
+                <EmptyModal title='Agregar un socio' fontSize={textSize} buttonText='Nuevo Socio'>
+                  <FormSocio type='add' />
+                </EmptyModal>
               }
             </DrawerBody>
           </DrawerContent>

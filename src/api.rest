@@ -13,20 +13,8 @@
 
 @host = {{hostname}}/socios
 
-### Agregar Cursos
-POST {{hostname}}cursos 
-apikey:{{apiKey}}
-Authorization: Bearer {{token}}
-Content-Type: application/json 
-
-[{"nombre":"2 C"},{"nombre":"2 D"},{"nombre":"3 A"},{"nombre":"3 B"},{"nombre":"3 C"},{"nombre":"3 D"},{"nombre":"4 A"},{"nombre":"4 B"},{"nombre":"4 C"},{"nombre":"4 D"},{"nombre":"5 A"},{"nombre":"5 B"},{"nombre":"5 C"},{"nombre":"5 D"},{"nombre":"6 A"},{"nombre":"6 B"},{"nombre":"6 C"},{"nombre":"6 D"}]
 
 
-### Obtener TODOS los Cursos
-GET {{hostname}}cursos 
-apikey:{{apiKey}}
-Authorization: Bearer {{token}}
-Content-Type: application/json 
 
 ### Obtener TODOS los Socios
 GET {{hostname}}socios 

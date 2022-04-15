@@ -16,7 +16,7 @@ function App() {
       <UserContextProvider>
       <ConfigContextProvider>
         <SociosRecordsContextProvider>
-          <Container  overflow={'hidden'} w={['100%']} >
+          <Container  overflow={'hidden'} w={['100%']} maxW={'auto'} >
             <NavBar />
             <AllRoutes />
             <Footer />

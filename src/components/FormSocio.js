@@ -20,6 +20,7 @@ import { MdArrowDropDown } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 
 import { getCursos } from 'utils/generals';
+import { useNavigate } from 'react-router-dom';
 
 const cursos = getCursos()
 
@@ -64,6 +65,7 @@ const FormSocio = ({ type, socioId = null }) => {
   const [alumne, setAlumne] = useState(initialAlumne);
   const { setActualModalOpen } = useUser()
 
+  const navigate = useNavigate()
   useEffect(() => {
     if (type === 'add') {
       setSocio(initialSocio)
@@ -110,6 +112,12 @@ const FormSocio = ({ type, socioId = null }) => {
     const name = target.name === 'nombreAlumne' ? 'nombre' : target.name
 
     setAlumne({ ...alumne, [name]: value })
+    if (target.name==='nombreAlumne') {
+      if (socio.nombre === '' || socio.nombre.slice(0,10)==='Familia de') {
+        setSocio({ ...socio, nombre: `Familia de ${value}` })
+      }
+    }
+
   };
 
   const onSubmit = async (event) => {
@@ -133,7 +141,9 @@ const FormSocio = ({ type, socioId = null }) => {
       alert(error.error_description || error.message)
     } finally {
       setActualModalOpen(false)
-
+      if (type === 'add') {
+        navigate('/list')
+      }
       toast.success(msg)
     }
   };

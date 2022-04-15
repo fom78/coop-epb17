@@ -1,5 +1,7 @@
-import { Heading, Box, Stack, Text, Wrap, WrapItem, IconButton } from "@chakra-ui/react";
-import { FaChevronRight, FaUser } from "react-icons/fa";
+import { Heading, Box, Stack, Text, IconButton } from "@chakra-ui/react";
+import { FaChevronRight } from "react-icons/fa";
+import { IoSchool } from "react-icons/io5";
+
 import { useNavigate } from "react-router-dom";
 
 import Avatar from 'components/icons/Avatar';
@@ -37,7 +39,7 @@ const SocioCard = ({ socio }) => {
               {nombre}
             </Heading>
             <Stack isInline alignItems={"center"} mt={1}>
-              <FaUser color="primary" fontSize={12} />
+              <IoSchool color="primary" fontSize={12} />
               {socio.alumnes.length > 0
                 ?
                 socio.alumnes.map((a, index) =>
