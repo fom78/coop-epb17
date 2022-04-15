@@ -62,9 +62,9 @@ const FormPago = ({ type, socioId, pagoId = null }) => {
     }
 
     return () => {
-      setPago({...initialPago, periodo:config.periodo_actual})
+      setPago({...initialPago, periodo:config.periodo_actual, monto: config.valor_cuota_anual})
     }
-  }, [pagoId, sociosRecords])
+  }, [pagoId, sociosRecords, config])
 
 
   // Define the submit button
