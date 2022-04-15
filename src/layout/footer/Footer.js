@@ -19,9 +19,11 @@ const Footer = ({
     as='footer'
     role='contentinfo'
     width='100%'
-    position='fixed'
+    // position='fixed'
     bottom='0'
     height='35px'
+    mt={6}
+    mb={6}
   >
     <Stack direction='row' spacing='4' align='center' justify='space-between'>
       <SocialMediaLinks />
@@ -30,7 +32,9 @@ const Footer = ({
           base: 'center',
           sm: 'start',
         }}
-        fontSize='sm'
+        // fontSize='sm'
+        fontSize={{ base: '8px', sm: '10px', md: '12px', lg: '14px' }}
+
       >
         {content}
       </Text>

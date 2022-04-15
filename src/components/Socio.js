@@ -1,4 +1,4 @@
-import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select } from "@chakra-ui/react";
+import { Box, Heading as ChakraHeading, Text, chakra, Stack, Wrap, WrapItem, Spacer, Heading, FormLabel, Select, Link } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { FaEdit, FaUser, FaCalendarCheck, FaAngleRight, FaTrash } from "react-icons/fa";
 
@@ -14,6 +14,7 @@ import { useUser } from "context/UserContext";
 import { useConfig } from "context/ConfigContext";
 import { IoSchool } from "react-icons/io5";
 
+const textSize = ['.65rem','.75rem','.85rem','.95rem']
 const initialSocio = {
   'nombre': "",
   'pagos': [],
@@ -141,7 +142,7 @@ const Socio = () => {
                   gap={4}
                 >
                   {periodosSiendoSocio.map(p => 
-                    <Text key={p}>{p}</Text>
+                    <Link key={p} onClick={()=>setShowPeriodo(p)} color={showPeriodo===p ? 'blue' : 'inherit'}>{p}</Link>
                     )}
                 </chakra.span>
               </Stack>
@@ -185,25 +186,25 @@ const Socio = () => {
             px={5}
             py={2}
           >
-            <Box display="flex" justifyContent='space-between' w="100%">
-              <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
+            <Box display="flex" justifyContent='space-between' w="100%" fontSize={textSize}>
+              <ChakraHeading color={"secondary.900"} fontSize={textSize} fontWeight={"bold"} w={'25%'}>
                 # Pagos
               </ChakraHeading>
-              <ChakraHeading color={"secondary.900"} fontSize={"lg"} fontWeight={"bold"}>
+              <ChakraHeading color={"secondary.900"} fontSize={textSize} fontWeight={"bold"} w={'25%'}>
                 Tipo
               </ChakraHeading>
-              <Box display={"flex"}>
-                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
+              <Box display={"flex"} flexDirection={'column'} textAlign={'center'} maxW={'25%'}>
+                <ChakraHeading color={"secondary.700"} fontSize={textSize} fontWeight={"bold"}>
                   Total:
                 </ChakraHeading>
-                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"} ml={3}>
+                <ChakraHeading color={"secondary.700"} fontSize={textSize} fontWeight={"bold"} ml={3} >
                   {parseCurrency(count)}
                 </ChakraHeading>
               </Box>
             </Box>
             {(user.rol === 'admin' || user.rol === 'mod') &&
-              <Box p='1' display='flex' w={['10%', '15%']}>
-                <ChakraHeading color={"secondary.700"} fontSize={"md"} fontWeight={"bold"}>
+              <Box p='1' display='flex' w={['10%', '15%']} w={'25%'}>
+                <ChakraHeading color={"secondary.700"} fontSize={textSize} fontWeight={"bold"}>
                   Acciones
                 </ChakraHeading>
               </Box>
@@ -227,15 +228,15 @@ const Socio = () => {
               py={2}
 
             >
-              <Box display='flex' justifyContent='space-between' w="100%">
-                <Text fontWeight={"500"} textTransform={"capitalize"}>
+              <Box display='flex' justifyContent='space-between' w="100%" fontSize={textSize}>
+                <Text fontWeight={"500"} textTransform={"capitalize"} w={'25%'}>
                   - {parseMonth(pago.mes)}
                 </Text>
-                <Text fontWeight={"500"} textTransform={"capitalize"}>{pago.tipo}</Text>
-                <Text> {parseCurrency(Number(pago.monto))}</Text>
+                <Text fontWeight={"500"} textTransform={"capitalize"} fontSize={textSize} w={'25%'}>{pago.tipo}</Text>
+                <Text fontSize={textSize} w={'25%'}> {parseCurrency(Number(pago.monto))}</Text>
               </Box>
               {(user.rol === 'admin' || user.rol === 'mod') &&
-                <Box p='1' display='flex' w={['10%', '15%']}>
+                <Box p='1' display='flex' fontSize={textSize} w={'25%'}>
                   <EmptyModal title='Editar el pago' buttonText={<FaEdit />} colorScheme={'blue'} variant={'ghost'}>
                     <FormPago type='edit' socioId={parseInt(id)} pagoId={pago.id} />
                   </EmptyModal>
