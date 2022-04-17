@@ -1,8 +1,7 @@
 import Socio from "components/Socio";
 import { Route, Routes } from "react-router-dom";
-import { Faq, Home, ListSocios, NotFound } from 'pages';
+import { Faq, Home, ListSocios, NotFound, Admin } from 'pages';
 import { ProtectedRoute } from "components/ProtectedRoute";
-import { Admin } from "pages/Admin";
 import { Container } from "@chakra-ui/react";
 
 function AllRoutes() {

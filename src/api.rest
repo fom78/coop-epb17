@@ -1,76 +1,44 @@
-# Rol Moderador
-# @token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MTFjODRiZWRiMTVmODIzZjQ5NWFmZmMiLCJleHAiOjE2MzgzMTY5NjI5ODgsImlhdCI6MTYzNzQ1Mjk2Mjk4OCwidXNlcm5hbWUiOiJtb2RlcmF0b3J0ZXN0IiwiaWQiOiI2MTFjODRiZWRiMTVmODIzZjQ5NWFmZmMifQ.A-08p65oPTiVReMcElkxM8M2Y1xPmnz0tBsqao1oZxo
-# Rol Admin
-@apiKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlbW1na2ZhZHZ1aGNkZXpyZGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg0MzYyNDIsImV4cCI6MTk2NDAxMjI0Mn0.uQMnOyDD8NXyOrP2-ulFS8qep_v2a7AbA2SxYMiLt9E
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjQ5MjY2MDAwLCJzdWIiOiIzNDk3OTMyNC1iNGQ2LTRiOTItYjVlYy0zZDMyZmEyNTI4MGEiLCJlbWFpbCI6InVudXN1YXJpbzA0QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCJ9.vumHFMD2PizH5HHSVMG6ayR9eu-HWNhF8LtuaIGos9o
+@apiKey = {{$dotenv REACT_APP_SUPABASE_ANON_KEY}}
 
-@hostname = https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/
-
+@hostname = {{$dotenv REACT_APP_SUPABASE_URL}}
 
 @contentType = application/json
-@createdAt = {{$datetime iso8601}}
-@modifiedBy = {{$processEnv USERNAME}}
 
-@host = {{hostname}}/socios
-
-
+@host = {{hostname}}/rest/v1/
 
 
 ### Obtener TODOS los Socios
-GET {{hostname}}socios 
+GET {{host}}socios 
 apikey:{{apiKey}}
-Content-Type: application/json 
+Content-Type: {{contentType}}
 
 
 ### agregar Socios
-POST {{hostname}}socios 
+POST {{host}}socios 
 apikey:{{apiKey}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
+Content-Type: {{contentType}}
 
 {"nombre":"Delete Socio2","telefono":"99999999999"}
 
 ### Editar Socios
-PATCH {{hostname}}socios?id=eq.5
+PATCH {{host}}socios?id=eq.5
 apikey:{{apiKey}}
-Content-Type: application/json
+Content-Type: {{contentType}}
 
-{"nombre":"Miriam Castro Ve"}
-
-### Agregar Evento de Monedas
-POST https://vemmgkfadvuhcdezrdax.supabase.co/rest/v1/socios 
-apikey:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlbW1na2ZhZHZ1aGNkZXpyZGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg0MzYyNDIsImV4cCI6MTk2NDAxMjI0Mn0.uQMnOyDD8NXyOrP2-ulFS8qep_v2a7AbA2SxYMiLt9E
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjQ4NDQ3NDEwLCJzdWIiOiIxNmQxMGY1ZS02NGQxLTQyMTctYWNlZS1hZTk4OGYxODVmZjkiLCJlbWFpbCI6ImZvbTc4YUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7fSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQifQ.xunSzY4R1RpqscEszvtqQ-3UpgUeSE-dkqEbkRWzl_0
-Content-Type: application/json 
-
-[
-    {"nombre":"LESCANO ALDANA","telefono":"3489440989"},
-    {"nombre":"MONTIEL SERGIO","telefono":"3489236343"},
-    {"nombre":"NUÑEZ GISELLA","telefono":"3489569107"},
-    {"nombre":"CASTRO MIRIAN","telefono":"3489657165"},
-    {"nombre":"PELLIGRINI ZAMIRA","telefono":"3489685520"},
-    {"nombre":"CIVICO PATRICIA ","telefono":"3489661581"},
-    {"nombre":"CIANCHETTA MATIAS","telefono":"1123900106"},
-    {"nombre":"LEVIN FABIAN","telefono":"3489594360"},
-    {"nombre":"PARELSTEIN JESICA","telefono":"3489442609"},
-    {"nombre":"BONELLI JOHANA","telefono":"3489684891"},
-    {"nombre":"ROMINA VILLALBA","telefono":"3489599653"},
-    {"nombre":"LUNA PAOLA","telefono":"3489439219"},
-    {"nombre":"VILLACOTA MIRIAM","telefono":"3489439219"}
-]
+{"nombre":"Luis Gonzalez", "email":"luis@gmail.com"}
 
 ### Obtener TODOS los Socios y pagos ???
-GET {{hostname}}socios?deleted=eq.false&select=*,pagos(monto,nota)
+GET {{host}}socios?deleted=eq.false&select=*,pagos(monto,nota)
 apikey:{{apiKey}}
-Content-Type: application/json 
+Content-Type: {{contentType}}
 
 ### Eliminar Pago de  Socios
-DELETE {{hostname}}pagos?id=eq.44
+DELETE {{host}}pagos?id=eq.44
 apikey:{{apiKey}}
-Content-Type: application/json
+Content-Type: {{contentType}}
 
 ### Editar Socios
-PATCH {{hostname}}socios?id=eq.35
+PATCH {{host}}socios?id=eq.35
 apikey:{{apiKey}}
-Content-Type: application/json
+Content-Type: {{contentType}}
 
