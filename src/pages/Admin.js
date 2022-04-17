@@ -11,7 +11,6 @@ export function Admin() {
   const [showEditForm, setShowEditForm] = useState(false)
   const [valorItemToEdit, setValorItemToEdit] = useState('')
 
-
   const confisArray = Object.keys(config)
 
   const handleEdit = (it) => {

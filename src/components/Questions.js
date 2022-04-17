@@ -14,8 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useConfig } from "context/ConfigContext";
 
-
-
 const Questions = () => {
   const {config}=useConfig()
 

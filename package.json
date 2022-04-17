@@ -24,7 +24,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "test2": "react-scripts test --watch-all -- --config=jest.config.js",
+    "test-coverage": "npm test -- --coverage --verbose --runInBand --config=jest.config.js",
+    "see-coverage": "cd coverage/lcov-report && index.html",
     "eject": "react-scripts eject --watchAll=false"
   },
   "eslintConfig": {

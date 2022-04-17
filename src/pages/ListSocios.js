@@ -68,9 +68,10 @@ export function ListSocios() {
               <option key={'todos'} value={'todos'}>Todos</option>
               {config.periodos.map((p, index) => <option key={index} value={p}>{p}</option>)}
             </Select>
-            <EmptyModal title='Agregar un socio' buttonText='Nuevo Socio'>
+            {/* <EmptyModal title='Agregar un socio' buttonText='Nuevo Socio'>
               <FormSocio type='add' />
-            </EmptyModal>
+            </EmptyModal> */}
+            <EmptyModal />
           </Box>
         }
         <SociosTablet  socios={showPeriodo==='todos' ? sociosRecords : socioEnPeriodoActual} />

@@ -25,7 +25,7 @@ import { useEffect } from 'react';
  * </EmptyModal>
  * @returns Return a component of React.
  */
-const EmptyModal = ({ children, title, buttonText, ...rest }) => {
+const EmptyModal = ({ children, title='Ventana Modal', buttonText='Mostrar', ...rest }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // Estado para controlar el cierre cuando se realizo la accion del hijo.
   const { actualModalOpen, setActualModalOpen } = useUser()
@@ -46,7 +46,7 @@ const EmptyModal = ({ children, title, buttonText, ...rest }) => {
   return (
     <>
       {/* Button Show */}
-      <Button onClick={()=>handleOpenModal()}  mr='4' minWidth={'3rem'} {...rest} >
+      <Button id='modal-button' onClick={()=>handleOpenModal()}  mr='4' minWidth={'3rem'} {...rest} >
         {buttonText}
       </Button>
       {/* Modal */}
