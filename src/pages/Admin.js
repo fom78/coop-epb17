@@ -5,7 +5,7 @@ import { useConfig } from "context/ConfigContext";
 import { useState } from "react";
 
 export function Admin() {
-  const { config, editConfig } = useConfig()
+  const { config, editConfig, loading } = useConfig()
 
   const [item, setItem] = useState()
   const [showEditForm, setShowEditForm] = useState(false)
@@ -34,53 +34,58 @@ export function Admin() {
     } finally {
 
       toast.success(msg)
-    setShowEditForm(false)
+      setShowEditForm(false)
 
     }
   };
 
+  if (loading) return <p>Loading</p>
   return (
     <>
       <Stack gap={{ base: 3, md: 5 }}>
         <Heading textAlign={"center"}>Configuraciones del Sistema</Heading>
-        {showEditForm && 
-        <Flex align='center' justify='center'>
-          <form onSubmit={onSubmit} >
-            <>
-              <FormControl
-                // isInvalid={!isValidEmail(email)}
-                isRequired
-                id='input-nombre'
-              >
-                <FormLabel>{item}</FormLabel>
-                <Input
-                  type='text'
-                  name='nombre'
-                  placeholder='Nombre del socio'
-                  onChange={handleValorItemToEdit}
-                  value={valorItemToEdit}
-                  minLength='1'
-                  maxLength='64'
-                />
-                <FormHelperText>Coloque el nuevo valor</FormHelperText>
-              </FormControl>
+        {showEditForm &&
+          <Flex align='center' justify='center'>
+            <form onSubmit={onSubmit} >
+              <>
+                <FormControl
+                  // isInvalid={!isValidEmail(email)}
+                  isRequired
+                  id='input-nombre'
+                >
+                  <FormLabel>{item}</FormLabel>
+                  <Input
+                    type='text'
+                    name='nombre'
+                    placeholder='Nombre del socio'
+                    onChange={handleValorItemToEdit}
+                    value={valorItemToEdit}
+                    minLength='1'
+                    maxLength='64'
+                  />
+                  <FormHelperText>Coloque el nuevo valor</FormHelperText>
+                </FormControl>
 
-              <Button
-                mt='4'
-                w='100%'
-                type='submit'
-                colorScheme='blue'
-              >
-                Editar
-              </Button>
-            </>
-          </form>
-        </Flex>
-      }
+                <Button
+                  mt='4'
+                  w='100%'
+                  type='submit'
+                  colorScheme='blue'
+                  data-testid={`btnTestEditar`}
+                >
+                  Editar
+                </Button>
+              </>
+            </form>
+          </Flex>
+        }
         <Box>
-          {confisArray.map((c, index) => <Box key={index}>{c} - {config[c]} <Button onClick={() => handleEdit(c)}>edit</Button> </Box>)}
-
-
+          {confisArray.map((c, index) => <Box key={index}>{c} - {config[c]}
+            <Button
+              data-testid={`btnTest-${index}`}
+              onClick={() => handleEdit(c)}>edit
+            </Button>
+          </Box>)}
         </Box>
       </Stack>
     </>
